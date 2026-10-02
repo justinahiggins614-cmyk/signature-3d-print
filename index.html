@@ -180,6 +180,7 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 
 <div id="aubar"><span id="aulabel">Reading…</span><button id="aupause" onclick="auPauseToggle()">❚❚ Pause</button><button onclick="auStop()">■ Stop</button></div>
 <script src="assets/mesh3d.js"></script>
+<script src="js/jah-talk-fallback.js"></script>
 <script>
 "use strict";
 /* ================= helpers ================= */
@@ -242,6 +243,62 @@ function previewSVG(id,big){
   <text y="28.5" text-anchor="middle" fill="#9b958a" font-size="3.4" font-family="monospace">${esc(id.length>22?id.slice(0,22):id)}</text></svg>`;
 }
 
+/* ================= JAHtalk shared talker (universal AI voice) =================
+   JAHtalk (js/jah-talk-fallback.js) is the shared, zero-network conversational
+   layer for every AI on every Signature site. It sits under every reply here:
+   conversational intents ("hello", "what are your duties?") are answered in
+   human words by JAHtalk.reply, and every final host reply passes through
+   JAHtalk.guard so no stat dump ever ships.
+   The profiles below are SITE-HELPER AIs — they claim no canon JAH-AI ID and
+   must never present one. code/coherence_check.py verifies this. */
+/* JAH AI PROFILES (machine-readable; fields parsed by code/coherence_check.py) */
+var JIT_PROFILE_FINDER={
+ "name":"Tangible Finder",
+ "id":"",
+ "description":"I help you find the right 3D-printable Signature medallion — describe what you would like to hold in plain words and I will walk you to it. Every spec and patent record has one.",
+ "abilities":[
+  "Search the whole tangible vault from your plain words.",
+  "Match records by title, ID and category and rank the best picks.",
+  "Walk you to a tangible's page with one tap.",
+  "Say plainly when nothing matches and what to try next."
+ ],
+ "domain":"3D-printable commemorative medallions",
+ "kind":"helper"
+};
+var JIT_PROFILE_ASK={
+ "name":"Tangible Q&A",
+ "id":"",
+ "description":"I answer questions about the tangible on your screen — what it is, what will print, which printers work and what files you get. I answer only from this item's page.",
+ "abilities":[
+  "Explain what a tangible is and which record it celebrates.",
+  "Describe exactly what prints — size, shape and variants.",
+  "Tell you which printers and materials work with the files.",
+  "List the download files you get — STL, OBJ and 3MF."
+ ],
+ "domain":"3D-printable commemorative medallions",
+ "kind":"helper"
+};
+var JIT={
+ /* conversational intents answered by the shared human voice (mirrors JAHtalk.reply) */
+ intent:/^(hi|hii+|hey|hello|yo|howdy|good\s?(morning|afternoon|evening|day)|greetings|sup|hiya)\b|what are your duties|what is your duty|what do you do|what can you do|your duties|your duty|your job|your role|your abilit|your capabilit|help me|^help$|what are you for|explain your duties|^duties$|who are you|your name|what is your name|introduce yourself|about yourself|thanks?|^thx$|^ty$|thank you|^(bye|goodbye|good\s?night|see you|later|gtg)\b|how are you|how's it going|how do you feel/,
+ /* if the user is chatting (not searching), return a human JAHtalk reply; else null */
+ talk:function(profile,q){
+  if(!window.JAHtalk)return null;
+  var t=String(q||"").toLowerCase().replace(/\s+/g," ").trim();
+  if(!this.intent.test(t))return null;
+  return JAHtalk.reply(profile,q);
+ },
+ /* every final host reply passes through here: stat dumps get human repair */
+ out:function(profile,html){
+  if(window.JAHtalk)return JAHtalk.guard(html,profile);
+  return html;
+ },
+ /* JAHtalk text (plain) -> chat HTML */
+ html:function(text){
+  return esc(text).replace(/\r?\n/g,"<br>");
+ }
+};
+
 /* ================= finder AI (deterministic, data-grounded) ================= */
 const Finder={
   STOP:new Set("the,a,an,and,or,for,to,of,in,on,with,is,it,this,that,me,my,i,you,your,we,our,do,does,want,need,needs,looking,look,find,finds,get,something,anything,some,any,please,like,just,really,very,would,could,should,can,will,have,has,are,be,was,were,at,by,from,as,so,but,if,not,no,yes,up,out,about,into,over,after,than,then,there,their,them,they,he,she,his,her,its,more,most,other,same,such,only,own,too,when,where,which,who,whom,why,how,all,both,each,few,show,tell,give,kind,thing,things,stuff,maybe,perhaps,print,printed,printer,tangible,medallion".split(",")),
@@ -250,7 +307,7 @@ const Finder={
     for(const k of kws){if(r.id.toLowerCase()===k)s+=10;else if(r.id.toLowerCase().includes(k))s+=6;
       if(t.includes(k))s+=k.length>5?3:2;}return s},
   say(html,who){const log=document.getElementById("flog");const d=document.createElement("div");d.className="fmsg "+who;d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight},
-  greet(){this.say("Hi! I'm the <b>tangible finder</b> 🏭 — describe what you'd like to hold in plain words and I'll walk you to the right medallion. Every spec and patent record has one.","host");
+  greet(){this.say(JIT.html((window.JAHtalk?JAHtalk.greet(JIT_PROFILE_FINDER):"Hi! I'm the <b>tangible finder</b> 🏭 — describe what you'd like to hold in plain words and I'll walk you to the right medallion. Every spec and patent record has one.")),"host");
     const chips=["solar power","water pump","kitchen tool","a gift","robotics"];
     document.getElementById("fchips").innerHTML=chips.map(c=>`<button class="fchip" onclick="Finder.chip(${JSON.stringify(c)})">${esc(c)}</button>`).join("");
     document.getElementById("fq").addEventListener("keydown",e=>{if(e.key==="Enter")Finder.ask()});},
@@ -258,14 +315,16 @@ const Finder={
   async ask(){
     const inp=document.getElementById("fq"),q=inp.value.trim();if(!q)return;
     this.say(esc(q),"you");inp.value="";
+    const cv=JIT.talk(JIT_PROFILE_FINDER,q);
+    if(cv!=null){this.say(JIT.html(cv),"host");return}
     const kws=this.keywords(q);
-    if(!kws.length){this.say("Give me one more word to go on — a thing, a field, a material… 🏭","host");return}
+    if(!kws.length){this.say(JIT.out(JIT_PROFILE_FINDER,"Give me one more word to go on — a thing, a field, a material… 🏭"),"host");return}
     const rows=await DB.load();
-    if(!rows.length){this.say("The vault index is offline right now — try again in a moment. 🏭","host");return}
+    if(!rows.length){this.say(JIT.out(JIT_PROFILE_FINDER,"The vault index is offline right now — try again in a moment. 🏭"),"host");return}
     const hits=rows.map(r=>({r,s:this.score(r,kws)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,5);
-    if(!hits.length){this.say(`Nothing in the vault matches <b>${esc(kws.join(" "))}</b> yet — try different words, or browse the shelves below. 🏭`,"host");return}
+    if(!hits.length){this.say(JIT.out(JIT_PROFILE_FINDER,`Nothing in the vault matches <b>${esc(kws.join(" "))}</b> yet — try different words, or browse the shelves below. 🏭`),"host");return}
     const cards=hits.map(h=>`<div class="fcard"><div class="fnm"><b>${esc(h.r.title)}</b><br><span style="color:var(--dim)">${esc(h.r.id)} · ${h.r.kind==="spec"?"SPEC":"PATENT"} · ${esc(h.r.cat)}</span></div><a class="btn" style="padding:6px 14px;font-size:.85em" href="?print=${encodeURIComponent(h.r.id)}">Take me there →</a></div>`).join("");
-    this.say(`Found <b>${hits.length}</b> tangibles — top pick first: 🏭${cards}`,"host");
+    this.say(JIT.out(JIT_PROFILE_FINDER,`Found <b>${hits.length}</b> tangibles — top pick first: 🏭${cards}`),"host");
   }
 };
 
@@ -427,7 +486,7 @@ const Print3D={
 const Ask={
   rec:null,
   greet(r){this.rec=r;
-    this.say("Ask me anything about this tangible — what it is, what will print, which printers work, or what files you get. I answer only from this item's page. ❓","host");
+    this.say(JIT.html((window.JAHtalk?JAHtalk.greet(JIT_PROFILE_ASK):"Ask me anything about this tangible — what it is, what will print, which printers work, or what files you get. I answer only from this item's page. ❓")),"host");
     const chips=["What is this?","What will print?","Which printers?","What files do I get?","Is this the actual invention?"];
     document.getElementById("qchips").innerHTML=chips.map(c=>`<button class="fchip" onclick="Ask.chip(${JSON.stringify(c)})">${esc(c)}</button>`).join("");},
   chip(c){document.getElementById("qq").value=c;this.ask()},
@@ -435,6 +494,8 @@ const Ask={
   ask(){
     const inp=document.getElementById("qq"),q=inp.value.trim();if(!q||!this.rec)return;
     this.say(esc(q),"you");inp.value="";
+    const cv=JIT.talk(JIT_PROFILE_ASK,q);
+    if(cv!=null){this.say(JIT.html(cv),"host");return}
     const t=q.toLowerCase(),r=this.rec,E=esc,isSpec=r.kind==="spec";
     let a;
     if(/what is this|what's this|what is it|describe|about/.test(t))
@@ -456,7 +517,7 @@ const Ask={
     else if(/how|use|display/.test(t))
       a=`Print it flat, base down, no supports. Display it, gift it, or clip the keychain variant to your keys. Collect them by record ID.`;
     else a=`I can only answer from this tangible's page — try <b>what is this</b>, <b>which printers</b>, <b>what files do I get</b>, or <b>is this the actual invention</b>.`;
-    this.say(a,"host");
+    this.say(JIT.out(JIT_PROFILE_ASK,a),"host");
   }
 };
 

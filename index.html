@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Signature 3D Print Depository — 3D-printable tangibles for every spec &amp; patent</title>
+<meta name="description" content="The tangible wing of the Signature Cyber Mega-Mall. A 3D-printable keepsake medallion for every Signature spec draft and every public patent record — free STL, OBJ and 3MF downloads, slicer profiles for every printer type, marching to 1,000,000 tangibles.">
+<link rel="canonical" href="https://justinahiggins614-cmyk.github.io/signature-3d-print/">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"The Signature 3D Print Depository",
+"url":"https://justinahiggins614-cmyk.github.io/signature-3d-print/",
+"description":"3D-printable keepsake medallions for every Signature spec draft and public patent record. Free STL/OBJ/3MF downloads."}
+</script>
+<style>
+:root{--bg:#0b0d10;--card:#14181d;--card2:#1a1f26;--line:#2b313a;--txt:#e9e5d9;--dim:#9b958a;
+--or:#ff7a1a;--am:#ffb300;--cy:#57d0e6;--gd:#ffcf4d;--ok:#7dd87d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5;
+background-image:linear-gradient(#ffffff06 1px,transparent 1px),linear-gradient(90deg,#ffffff06 1px,transparent 1px);background-size:44px 44px}
+a{color:var(--cy)}
+/* THE JAH NETWORK */
+.jahnet{background:#06080b;color:#9aa4b2;font-size:.74em;padding:7px 10px;text-align:center;line-height:2.1;letter-spacing:.02em;border-bottom:1px solid var(--line)}
+.jahnet-t{color:var(--gd);font-weight:700;letter-spacing:.25em;margin-right:10px}
+.jahnet a{color:#9fc2ff;text-decoration:none;margin:0 6px;white-space:nowrap}
+.jahnet a:hover{text-decoration:underline}
+.jahnet .cur{color:var(--or);font-weight:700;margin:0 6px;border:1px solid var(--or);border-radius:6px;padding:1px 8px}
+/* sister-site banner */
+.sister{background:linear-gradient(90deg,#2a1503,#3a1e05);border-bottom:2px solid var(--or);padding:12px 16px;text-align:center;font-size:.95em}
+.sister b{color:var(--or);letter-spacing:.12em}
+.sister a{color:#ffd9ad;font-weight:700}
+/* hero */
+.hero{text-align:center;padding:44px 16px 26px;border-bottom:3px double var(--or);
+background:radial-gradient(ellipse at 50% -10%,#3a2410 0%,var(--bg) 65%)}
+.hero .kicker{font-size:.9em;letter-spacing:.5em;color:var(--or);text-transform:uppercase;margin:0}
+.hero h1{margin:.25em 0 .1em;font-size:2.5em;letter-spacing:.04em;color:#fff;text-shadow:0 0 26px #ff7a1a66}
+.hero h1 .o{color:var(--or);text-shadow:0 0 26px var(--or)}
+.hero p{color:var(--dim);max-width:720px;margin:.5em auto}
+.honest{display:inline-block;margin:12px auto 0;max-width:760px;padding:12px 20px;border:2px solid var(--am);border-radius:12px;
+color:#ffe1a8;background:#241a06;font-size:.92em;text-align:left}
+.honest b{color:var(--am)}
+.counts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 16px;font-size:.9em;color:var(--txt)}
+.chip b{color:var(--or)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 14px}
+.sec{margin:34px 0}
+.sec h2{color:var(--or);letter-spacing:.14em;font-size:1.35em;border-bottom:1px solid var(--line);padding-bottom:8px;text-transform:uppercase}
+.sec h2 .sub{color:var(--dim);font-size:.6em;letter-spacing:.05em;text-transform:none;display:block;margin-top:4px}
+/* finder */
+.finder{margin:14px 0 6px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:linear-gradient(180deg,#17130c,#0e0b07)}
+.finder .fhead{font-weight:800;color:var(--or);letter-spacing:.06em;margin-bottom:8px}
+.frow{display:flex;gap:8px}
+.frow input{flex:1;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:#060809;color:var(--txt);font-size:1em}
+.flog{max-height:300px;overflow-y:auto;margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.fmsg{padding:10px 14px;border-radius:10px;max-width:92%;font-size:.93em}
+.fmsg.you{align-self:flex-end;background:#2a1c08;border:1px solid var(--or)}
+.fmsg.host{align-self:flex-start;background:var(--card2);border:1px solid var(--line)}
+.fcard{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;background:#101318}
+.fcard .fnm{font-size:.9em;margin-bottom:6px}
+.fchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.fchip{background:#1d150a;border:1px solid var(--or);color:#ffd9ad;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:.85em}
+/* toolbar + grid */
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.toolbar input[type=search]{flex:1;min-width:200px;padding:12px 16px;border-radius:10px;border:1px solid var(--line);background:#060809;color:var(--txt);font-size:1em}
+.toolbar select{padding:12px;border-radius:10px;border:1px solid var(--line);background:#060809;color:var(--txt)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{padding:10px 18px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--txt);cursor:pointer;font-weight:700}
+.tab.on{border-color:var(--or);color:var(--or)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:14px}
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;transition:transform .12s}
+.card:hover{transform:translateY(-3px);border-color:var(--or)}
+.card svg{width:100%;height:auto;display:block;background:#0a0c0e;border-radius:8px}
+.card .sku{font-size:.75em;color:var(--dim);margin-top:8px}
+.card h4{margin:.2em 0;font-size:.95em}
+.card .meta{font-size:.8em;color:var(--dim)}
+.morewrap{text-align:center;margin:20px 0}
+.btn{display:inline-block;padding:10px 20px;border-radius:10px;border:1px solid var(--or);background:#2a1503;color:var(--or);font-weight:800;cursor:pointer;text-decoration:none;font-size:.95em}
+.btn:hover{background:#3a1e05}
+.btn.ghost{border-color:var(--line);background:var(--card);color:var(--txt)}
+.btn.cy{border-color:var(--cy);color:var(--cy);background:#0a1a1e}
+/* item view */
+#itemview{display:none}
+.iv{display:grid;grid-template-columns:minmax(280px,420px) 1fr;gap:24px;margin-top:16px}
+@media(max-width:800px){.iv{grid-template-columns:1fr}}
+.iv .prev{background:#0a0c0e;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+.iv .prev svg{width:100%;height:auto}
+.iv h3{margin:.2em 0;font-size:1.5em}
+.badge{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.75em;font-weight:800;letter-spacing:.08em;margin-right:8px}
+.badge.spec{background:#0f2a33;color:var(--cy);border:1px solid var(--cy)}
+.badge.pat{background:#2a1c08;color:var(--am);border:1px solid var(--am)}
+.kv{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;font-size:.92em;margin:12px 0}
+.kv dt{color:var(--dim)}
+.dlrow{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.variant{display:flex;gap:8px;margin:10px 0}
+.profiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:12px}
+.prof{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.88em}
+.prof h4{margin:.1em 0 .4em;color:var(--am);font-size:.95em;letter-spacing:.05em}
+.prof code{display:block;white-space:pre-wrap;color:#cfe3ff;font-size:.85em;background:#0a0c0e;border-radius:6px;padding:8px;margin-top:6px}
+.note{font-size:.85em;color:var(--dim);border-left:3px solid var(--am);padding:8px 12px;margin:12px 0;background:#141007}
+/* Q&A */
+.qa{margin-top:18px;border:1px solid var(--line);border-radius:12px;padding:14px;background:#100e0a}
+.qa .qhead{font-weight:800;color:var(--am);margin-bottom:8px;letter-spacing:.05em}
+.qlog{max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+/* guide */
+.guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:14px}
+.gstep{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.gstep h3{color:var(--or);margin:.1em 0 .4em;font-size:1.05em}
+.gstep p{font-size:.9em;color:var(--dim)}
+footer{border-top:1px solid var(--line);margin-top:40px;padding:24px 16px;text-align:center;color:var(--dim);font-size:.85em}
+footer .prov{color:var(--am)}
+#aubar{display:none;position:fixed;bottom:14px;left:50%;transform:translateX(-50%);background:#101318;border:1px solid var(--or);
+border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;font-size:.9em}
+#aubar button{background:#1d150a;border:1px solid var(--or);color:var(--or);border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:700}
+.staticcount{color:var(--dim);font-size:.85em}
+</style>
+</head>
+<body>
+<div class="jahnet"><span class="jahnet-t">THE JAH NETWORK</span><a href="https://justinahiggins614-cmyk.github.io/jah-ai-models/">The Signature AI Telephone Book</a><a href="https://justinahiggins614-cmyk.github.io/jah-calculator/">Signature Universal Paradox Immune Calculator</a><a href="https://justinahiggins614-cmyk.github.io/jah-dictionary/">The Signature Dictionary</a><a href="https://justinahiggins614-cmyk.github.io/jah-wiki/">JAH Wiki</a><a href="https://justinahiggins614-cmyk.github.io/jah-n-wiki-leaks/">JAH-N Wiki</a><a href="https://justinahiggins614-cmyk.github.io/cyber-patent-catalog/">Globally Rejustered Patent Catalog</a><a href="https://justinahiggins614-cmyk.github.io/signature-one-archive/specs.html">Signature Spec Catalog Pending Patents</a><a href="https://justinahiggins614-cmyk.github.io/signature-llama/">Signature Llama</a><a href="https://justinahiggins614-cmyk.github.io/jah-computer-systems/">The Signature PC System Depository</a><a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">The Signature Cyber Mega-Mall</a><a href="https://justinahiggins614-cmyk.github.io/signature-university/">Signature University</a><a href="https://justinahiggins614-cmyk.github.io/signature-books/">The Signature Book Depository</a><a href="https://justinahiggins614-cmyk.github.io/signature-comics/">The Signature Comic Store</a><a href="https://justinahiggins614-cmyk.github.io/signature-newspapers/">The Signature Global Newspaper Archive</a><span class="cur">YOU ARE HERE: THE SIGNATURE 3D PRINT DEPOSITORY</span></div>
+
+<div class="sister">🏭 <b>THE TANGIBLE WING</b> — this is the sister site of the <a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">Signature Cyber Mega-Mall</a>. The mall is the <b>software</b> side — downloads, AIs, programs. This depository is the <b>tangible</b> side — things you can hold, printed on your own 3D printer.</div>
+
+<header class="hero">
+<p class="kicker">The Signature 3D Print Depository</p>
+<h1>PRINT THE <span class="o">TANGIBLE</span> NETWORK</h1>
+<p>A 3D-printable keepsake medallion for <b>every</b> Signature spec draft and <b>every</b> public patent record across the network. Free downloads, every printer type covered, marching to one million tangibles.</p>
+<div class="honest"><b>▲ HONEST LABEL — read this first.</b> Each "Signature Tangible" is a <b>commemorative emblem FOR the record</b> — an embossed keepsake medallion whose relief pattern is generated from the record's ID. It is <b>NOT</b> a functional replica of the invention the record describes. Printing the medallion for a patent does not print the patented device.</div>
+<div class="counts" id="livecounts"><span class="chip">counting tangibles…</span></div>
+<p class="staticcount">561,929 printable tangibles indexed (518,355 spec · 43,574 patent), as of 2026-10-02. Free STL, OBJ and 3MF downloads — marching to 1,000,000.</p>
+</header>
+
+<div class="wrap">
+<section class="sec" id="findsec">
+<h2>🔎 Finder <span class="sub">Describe what you want to hold — the finder walks you to the right tangible</span></h2>
+<div class="finder" id="finder">
+<div class="fhead">🛎 TANGIBLE FINDER — what should we print today?</div>
+<div class="frow"><input id="fq" maxlength="140" placeholder="Describe it in plain words — e.g. solar water pump…" aria-label="Ask the tangible finder"><button class="btn" onclick="Finder.ask()">ASK</button></div>
+<div class="flog" id="flog" aria-live="polite"></div>
+<div class="fchips" id="fchips"></div>
+</div>
+</section>
+
+<section class="sec" id="browsesec">
+<h2>🗂 Browse the vault <span class="sub">Every tangible, by source — pick a shelf</span></h2>
+<div class="toolbar">
+<div class="tabs">
+<button class="tab on" data-s="all" onclick="App.setSrc('all')">ALL</button>
+<button class="tab" data-s="spec" onclick="App.setSrc('spec')">SPEC TANGIBLES</button>
+<button class="tab" data-s="pat" onclick="App.setSrc('pat')">PATENT TANGIBLES</button>
+</div>
+<select id="catchip" aria-label="Filter by category" onchange="App.setCat(this.value)"><option value="">All categories</option></select>
+<input type="search" id="q" placeholder="Search 560,000+ tangibles — title, ID, category…" aria-label="Search tangibles">
+</div>
+<div class="fchips" id="az"></div>
+<div class="grid" id="grid"></div>
+<div class="morewrap"><button class="btn ghost" id="morebtn" onclick="App.more()">LOAD MORE ↓</button></div>
+</section>
+
+<section class="sec" id="itemsec">
+<div id="itemview"></div>
+</section>
+
+<section class="sec" id="guidesec">
+<h2>🖨 Print guide <span class="sub">From download to object — any printer, any material</span></h2>
+<div class="guide">
+<div class="gstep"><h3>1 · PICK A TANGIBLE</h3><p>Search or browse the vault, open any item. Every one of the 560,000+ records has its own printable medallion, generated fresh from its ID.</p></div>
+<div class="gstep"><h3>2 · DOWNLOAD A UNIVERSAL FILE</h3><p><b>STL</b> (every slicer reads it), <b>OBJ</b> (universal backup), or <b>3MF</b> (modern universal). The mesh is generated in your browser — nothing to wait for, no account, no cost.</p></div>
+<div class="gstep"><h3>3 · SLICE FOR YOUR PRINTER</h3><p>There is <b>no universal G-code</b> — G-code is baked for one printer model. Slice the STL in your own slicer with the profile below for your machine, then print.</p></div>
+<div class="gstep"><h3>4 · HOLD IT</h3><p>Medallion: 50&nbsp;mm across, ~7&nbsp;mm tall — a desk piece. Keychain variant: same medallion with a fused loop. Display it, gift it, collect them.</p></div>
+</div>
+<h2 style="margin-top:26px">⚙ Slicer profiles <span class="sub">Copy into your slicer — tuned per printer class</span></h2>
+<div class="profiles" id="profiles"></div>
+<div class="note"><b>Honest note:</b> these profiles are starting points from the medallion's geometry (flat base, no overhangs beyond the rim, fused shells). Your exact temperatures depend on your filament brand — run a temperature tower if you want perfection.</div>
+</section>
+</div>
+
+<footer>
+<p><b style="color:var(--or)">THE SIGNATURE 3D PRINT DEPOSITORY</b> <span class="prov">— provisional name, the owner confirms the final name.</span></p>
+<p>Every tangible is a commemorative emblem <b>for</b> its record — never a functional replica of the invention described. Spec drafts are marked draft — not filed, not granted. Patent records are public records with their publication identifiers shown.</p>
+<p>Site 15 of <b>THE JAH NETWORK</b> · tangible wing · sister site: <a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">The Signature Cyber Mega-Mall</a> (the software mall)</p>
+</footer>
+
+<div id="aubar"><span id="aulabel">Reading…</span><button id="aupause" onclick="auPauseToggle()">❚❚ Pause</button><button onclick="auStop()">■ Stop</button></div>
+<script src="assets/mesh3d.js"></script>
+<script>
+"use strict";
+/* ================= helpers ================= */
+async function gz(url){const r=await fetch(url);if(!r.ok)throw new Error("HTTP "+r.status);return await new Response(r.body.pipeThrough(new DecompressionStream("gzip"))).text()}
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const HOME="https://justinahiggins614-cmyk.github.io/signature-3d-print/";
+const SPEC_SEARCH="https://justinahiggins614-cmyk.github.io/signature-one-archive/data/index/specs.search.json.gz";
+const PAT_SEARCH="https://justinahiggins614-cmyk.github.io/cyber-patent-catalog/data/patents.search.json.gz";
+function mHead(title,desc,canon){if(title)document.title=title;const md=document.querySelector('meta[name="description"]');if(md&&desc)md.setAttribute("content",desc);const cl=document.querySelector('link[rel="canonical"]');if(cl&&canon)cl.setAttribute("href",canon)}
+
+/* ================= data layer ================= */
+const DB={
+  specs:null,pats:null,rows:[],specById:{},patById:{},patByPub:{},cats:[],
+  counts:{specs:518355,patents:43574},
+  async load(){
+    if(this.rows.length)return this.rows;
+    try{
+      const s=await gz(SPEC_SEARCH);this.specs=JSON.parse(s);
+    }catch(e){this.specs=[]}
+    try{
+      const p=await gz(PAT_SEARCH);
+      const inner=JSON.parse(p);this.pats=Array.isArray(inner[0])?inner.flat():inner;
+    }catch(e){this.pats=[]}
+    const catset={};
+    for(const r of this.specs){const rec={id:r[0],title:r[1],kind:"spec",cat:r[4]||"General"};
+      this.rows.push(rec);this.specById[rec.id]=rec;if(rec.cat)catset[rec.cat]=1;}
+    for(const r of this.pats){const rec={id:r[9]||r[0],pub:r[0],title:r[1]||"Untitled patent record",kind:"pat",
+      cat:r[5]||"Patents",inventor:r[3]||"",assignee:r[4]||"",date:r[6]||""};
+      this.rows.push(rec);this.patById[rec.id]=rec;if(rec.pub)this.patByPub[rec.pub]=rec;}
+    this.cats=Object.keys(catset).sort();
+    if(this.specs.length)this.counts.specs=this.specs.length;
+    if(this.pats.length)this.counts.patents=this.pats.length;
+    return this.rows;
+  },
+  resolve(id){
+    id=String(id||"").trim();
+    return this.specById[id]||this.patById[id]||this.patByPub[id]||null;
+  }
+};
+
+/* ================= top-view preview (true design footprint) ================= */
+function previewSVG(id,big){
+  const P=medallionParams(id),S=big?1:1;
+  const sc=v=>(v).toFixed(2);
+  let rays="";
+  for(const r of P.rays){
+    const a=r.ang*180/Math.PI;
+    rays+=`<rect x="-1.1" y="-18.5" width="2.2" height="11" rx="1" fill="#3a4350" transform="rotate(${a.toFixed(1)})"/>`;
+  }
+  let hex="";for(let i=0;i<6;i++){const a=P.hexRot+i*Math.PI/3;hex+=`${sc(Math.cos(a)*8)},${sc(Math.sin(a)*8)} `;}
+  let notch="";for(let i=0;i<P.notches;i++){const a=i*2*Math.PI/P.notches;
+    notch+=`<circle cx="${sc(Math.cos(a)*4)}" cy="${sc(Math.sin(a)*4)}" r="0.7" fill="#ffb300"/>`;}
+  return `<svg viewBox="-30 -30 60 60" role="img" aria-label="Top-view design preview of the tangible medallion for ${esc(id)}">
+  <defs><radialGradient id="stg${big?"b":"s"}" cx="40%" cy="35%"><stop offset="0%" stop-color="#3a4350"/><stop offset="100%" stop-color="#181d24"/></radialGradient></defs>
+  <circle r="25" fill="url(#stg${big?"b":"s"})" stroke="#ff7a1a" stroke-width="1.2"/>
+  <circle r="22.5" fill="none" stroke="#ffb300" stroke-width="2.2"/>
+  ${rays}
+  <polygon points="${hex}" fill="#232a34" stroke="#57d0e6" stroke-width="0.8"/>
+  <circle r="4" fill="#2b333e" stroke="#ffb300" stroke-width="0.7"/>${notch}
+  <text y="28.5" text-anchor="middle" fill="#9b958a" font-size="3.4" font-family="monospace">${esc(id.length>22?id.slice(0,22):id)}</text></svg>`;
+}
+
+/* ================= finder AI (deterministic, data-grounded) ================= */
+const Finder={
+  STOP:new Set("the,a,an,and,or,for,to,of,in,on,with,is,it,this,that,me,my,i,you,your,we,our,do,does,want,need,needs,looking,look,find,finds,get,something,anything,some,any,please,like,just,really,very,would,could,should,can,will,have,has,are,be,was,were,at,by,from,as,so,but,if,not,no,yes,up,out,about,into,over,after,than,then,there,their,them,they,he,she,his,her,its,more,most,other,same,such,only,own,too,when,where,which,who,whom,why,how,all,both,each,few,show,tell,give,kind,thing,things,stuff,maybe,perhaps,print,printed,printer,tangible,medallion".split(",")),
+  keywords(t){return String(t||"").toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>=3&&!this.STOP.has(w))},
+  score(r,kws){const t=(r.title+" "+r.id+" "+(r.cat||"")).toLowerCase();let s=0;
+    for(const k of kws){if(r.id.toLowerCase()===k)s+=10;else if(r.id.toLowerCase().includes(k))s+=6;
+      if(t.includes(k))s+=k.length>5?3:2;}return s},
+  say(html,who){const log=document.getElementById("flog");const d=document.createElement("div");d.className="fmsg "+who;d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight},
+  greet(){this.say("Hi! I'm the <b>tangible finder</b> 🏭 — describe what you'd like to hold in plain words and I'll walk you to the right medallion. Every spec and patent record has one.","host");
+    const chips=["solar power","water pump","kitchen tool","a gift","robotics"];
+    document.getElementById("fchips").innerHTML=chips.map(c=>`<button class="fchip" onclick="Finder.chip(${JSON.stringify(c)})">${esc(c)}</button>`).join("");
+    document.getElementById("fq").addEventListener("keydown",e=>{if(e.key==="Enter")Finder.ask()});},
+  chip(c){document.getElementById("fq").value=c;this.ask()},
+  async ask(){
+    const inp=document.getElementById("fq"),q=inp.value.trim();if(!q)return;
+    this.say(esc(q),"you");inp.value="";
+    const kws=this.keywords(q);
+    if(!kws.length){this.say("Give me one more word to go on — a thing, a field, a material… 🏭","host");return}
+    const rows=await DB.load();
+    if(!rows.length){this.say("The vault index is offline right now — try again in a moment. 🏭","host");return}
+    const hits=rows.map(r=>({r,s:this.score(r,kws)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,5);
+    if(!hits.length){this.say(`Nothing in the vault matches <b>${esc(kws.join(" "))}</b> yet — try different words, or browse the shelves below. 🏭`,"host");return}
+    const cards=hits.map(h=>`<div class="fcard"><div class="fnm"><b>${esc(h.r.title)}</b><br><span style="color:var(--dim)">${esc(h.r.id)} · ${h.r.kind==="spec"?"SPEC":"PATENT"} · ${esc(h.r.cat)}</span></div><a class="btn" style="padding:6px 14px;font-size:.85em" href="?print=${encodeURIComponent(h.r.id)}">Open tangible →</a></div>`).join("");
+    this.say(`Found <b>${hits.length}</b> tangibles — top pick first: 🏭${cards}`,"host");
+  }
+};
+
+/* ================= app: browse + item ================= */
+const App={
+  src:"all",cat:"",q:"",letter:"",shown:0,page:60,
+  async boot(){
+    Finder.greet();this.renderAZ();this.bindQ();
+    const pid=new URLSearchParams(location.search).get("print");
+    this.updateCounts();
+    DB.load().then(()=>{this.fillCats();this.updateCounts();
+      if(pid){const r=DB.resolve(pid);if(r)this.openItem(r);else this.showGrid();}
+      else this.showGrid();});
+    if(!pid)this.showGridSoon();
+  },
+  showGridSoon(){},
+  updateCounts(){
+    const c=DB.counts,total=c.specs+c.patents;
+    document.getElementById("livecounts").innerHTML=
+      `<span class="chip">Tangibles in vault: <b>${total.toLocaleString()}</b> / 1,000,000</span>`+
+      `<span class="chip">Spec tangibles: <b>${c.specs.toLocaleString()}</b></span>`+
+      `<span class="chip">Patent tangibles: <b>${c.patents.toLocaleString()}</b></span>`+
+      `<span class="chip">Print files: <b>STL · OBJ · 3MF — free</b></span>`;
+  },
+  fillCats(){const s=document.getElementById("catchip");
+    s.innerHTML='<option value="">All categories</option>'+DB.cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");},
+  renderAZ(){
+    document.getElementById("az").innerHTML=`<button class="fchip" data-l="" style="border-color:var(--or)">#</button>`+
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(l=>`<button class="fchip" data-l="${l}">${l}</button>`).join("");
+    document.querySelectorAll("#az .fchip").forEach(b=>b.onclick=()=>{this.letter=b.dataset.l;
+      document.querySelectorAll("#az .fchip").forEach(x=>x.style.borderColor="");b.style.borderColor="var(--or)";this.search(true);});
+  },
+  bindQ(){let t;document.getElementById("q").addEventListener("input",e=>{clearTimeout(t);
+    t=setTimeout(()=>{this.q=e.target.value.trim();this.search(true)},220)});},
+  setSrc(s){this.src=s;document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.s===s));this.search(true)},
+  setCat(c){this.cat=c;this.search(true)},
+  filtered(){
+    const q=this.q.toLowerCase(),L=this.letter.toUpperCase();
+    return DB.rows.filter(r=>
+      (this.src==="all"||(this.src==="spec"?r.kind==="spec":r.kind==="pat"))&&
+      (!this.cat||r.cat===this.cat)&&
+      (!L||r.title.toUpperCase().startsWith(L))&&
+      (!q||r.title.toLowerCase().includes(q)||r.id.toLowerCase().includes(q)||(r.cat||"").toLowerCase().includes(q)));
+  },
+  search(reset){this.grid=this.filtered();this.shown=0;this.render(true)},
+  showGrid(){if(!DB.rows.length){setTimeout(()=>this.showGrid(),400);return}this.search(true)},
+  render(reset){
+    const g=document.getElementById("grid");
+    if(reset){g.innerHTML="";this.shown=0}
+    const slice=(this.grid||[]).slice(this.shown,this.shown+this.page);
+    g.insertAdjacentHTML("beforeend",slice.map(r=>
+      `<div class="card" onclick="location.href='?print=${encodeURIComponent(r.id)}'">${previewSVG(r.id,false)}
+      <div class="sku">${esc(r.id)}</div><h4>${esc(r.title.length>70?r.title.slice(0,70)+"…":r.title)}</h4>
+      <div class="meta">${r.kind==="spec"?'<span class="badge spec">SPEC</span>':'<span class="badge pat">PATENT</span>'} ${esc(r.cat)}</div></div>`).join(""));
+    this.shown+=slice.length;
+    document.getElementById("morebtn").style.display=this.shown>=(this.grid||[]).length?"none":"";
+    if(!(this.grid||[]).length)g.innerHTML="<p style='color:var(--dim)'>No tangibles match — try another search.</p>";
+  },
+  more(){this.render(false)},
+  openItem(r){
+    document.getElementById("browsesec").style.display="none";
+    document.getElementById("findsec").style.display="none";
+    Item.show(r);
+    document.getElementById("itemsec").scrollIntoView();
+  }
+};
+
+/* ================= item view ================= */
+const PROFILES=[
+ {name:"FDM · PLA — most home printers",code:"Layer height: 0.20 mm\nWalls: 3\nInfill: 15% grid\nNozzle: 200-210 C\nBed: 60 C\nSupports: none\nBrim: optional 5 mm\nOrientation: flat, base down"},
+ {name:"FDM · PETG / ABS",code:"Layer height: 0.20 mm\nWalls: 3\nInfill: 20% grid\nNozzle: 235-250 C\nBed: 80-90 C\nSupports: none\nBrim: 8 mm\nABS: ventilate the room"},
+ {name:"SLA · resin",code:"Layer height: 0.05 mm\nOrientation: flat on build plate\nSupports: light, rim only\nWash: IPA per your resin\nCure: per resin datasheet"},
+ {name:"SLS · nylon",code:"Standard nylon profile\nSupports: none needed\nFinish: bead-blast\nRays and notches resolve at 0.10 mm layers"},
+ {name:"Metal · binder jetting",code:"Scale: +3% (sintering shrinkage)\nMin wall 1.5 mm: medallion passes\nFinish: tumble or polish\nConfirm profile with your print bureau"}];
+const Item={
+  rec:null,variant:"medallion",
+  show(r){
+    this.rec=r;this.variant="medallion";
+    const isSpec=r.kind==="spec";
+    const srcUrl=isSpec?"https://justinahiggins614-cmyk.github.io/signature-one-archive/specs.html?spec="+encodeURIComponent(r.id)
+      :"https://justinahiggins614-cmyk.github.io/cyber-patent-catalog/?patent="+encodeURIComponent(r.pub||r.id);
+    mHead("Signature Tangible — "+r.id+" | The Signature 3D Print Depository",
+      "Free 3D-printable keepsake medallion for "+r.id+": "+r.title+". STL, OBJ and 3MF downloads.",
+      HOME+"?print="+encodeURIComponent(r.id));
+    document.getElementById("itemview").style.display="block";
+    document.getElementById("itemview").innerHTML=`
+    <div style="margin-bottom:10px"><a href="./" style="color:var(--dim)">← back to the vault</a></div>
+    <div class="iv">
+      <div class="prev"><div id="pv">${previewSVG(r.id,true)}</div>
+        <div class="variant">
+          <button class="tab on" id="vmed" onclick="Item.setVariant('medallion')">🏅 MEDALLION</button>
+          <button class="tab" id="vkc" onclick="Item.setVariant('keychain')">🔗 KEYCHAIN</button>
+        </div>
+        <p style="font-size:.8em;color:var(--dim)">Top-view design preview — the relief pattern is generated from this record's ID. 50&nbsp;mm across.</p>
+      </div>
+      <div>
+        ${isSpec?'<span class="badge spec">SPEC TANGIBLE</span>':'<span class="badge pat">PATENT TANGIBLE</span>'}
+        <h3>Signature Tangible — ${esc(r.id)}</h3>
+        <p style="color:var(--dim)">${esc(r.title)}</p>
+        <div class="honest" style="max-width:none"><b>▲ HONEST LABEL.</b> This is a <b>commemorative emblem FOR the record ${esc(r.id)}</b> — a keepsake medallion, not a functional replica of the invention described. ${isSpec?"The record is a draft specification — not filed, not a granted patent.":"The record is a public patent record; its publication identifier is shown below."}</div>
+        <dl class="kv">
+          <dt>Record</dt><dd>${esc(r.id)}${r.pub&&r.pub!==r.id?" · pub "+esc(r.pub):""}</dd>
+          <dt>Category</dt><dd>${esc(r.cat||"—")}</dd>
+          ${r.inventor?`<dt>Inventor</dt><dd>${esc(r.inventor)}</dd>`:""}
+          ${r.assignee?`<dt>Assignee</dt><dd>${esc(r.assignee)}</dd>`:""}
+          ${r.date?`<dt>Pub date</dt><dd>${esc(r.date)}</dd>`:""}
+          <dt>Source record</dt><dd><a href="${srcUrl}" target="_blank" rel="noopener">Open the ${isSpec?"spec draft":"patent record"} ↗</a></dd>
+          <dt>Deep link</dt><dd style="color:#9fc2ff">?print=${esc(r.id)}</dd>
+        </dl>
+        <h4 style="color:var(--or);letter-spacing:.08em">⬇ PRINT FILES — generated in your browser, free</h4>
+        <div class="dlrow">
+          <button class="btn" onclick="Print3D.dl('stl')">⬇ STL <span style="font-weight:400;font-size:.8em">(universal)</span></button>
+          <button class="btn" onclick="Print3D.dl('obj')">⬇ OBJ <span style="font-weight:400;font-size:.8em">(backup)</span></button>
+          <button class="btn" onclick="Print3D.dl('3mf')">⬇ 3MF <span style="font-weight:400;font-size:.8em">(modern)</span></button>
+          <button class="btn ghost" onclick="Print3D.copySettings()">📋 COPY PRINT SETTINGS</button>
+          <button class="btn cy" onclick="Aud.readItem()">🔊 READ ALOUD</button>
+        </div>
+        <div class="note"><b>No universal G-code exists</b> — G-code is baked for one printer model. Slice the STL in <i>your</i> slicer with a profile below, then print. Any FDM, SLA, SLS or metal machine that reads STL can print this.</div>
+        <h4 style="color:var(--am);letter-spacing:.08em">⚙ SLICER PROFILES</h4>
+        <div class="profiles">${PROFILES.map((p,i)=>`<div class="prof"><h4>${esc(p.name)}</h4><code>${esc(p.code)}</code><button class="btn ghost" style="margin-top:8px;padding:6px 14px;font-size:.8em" onclick="Print3D.copyProfile(${i})">📋 COPY</button></div>`).join("")}</div>
+        <h4 style="color:var(--am);letter-spacing:.08em;margin-top:18px">💬 HOW TO USE</h4>
+        <p style="font-size:.92em;color:var(--dim)"><b style="color:var(--txt)">Medallion</b> (50&nbsp;mm × ~7&nbsp;mm): desk piece, shelf display, gift — print flat, base down, no supports. <b style="color:var(--txt)">Keychain variant</b>: same medallion with a fused loop (5&nbsp;mm hole) — clip a ring through it. Collect them by record ID; the notch ring on the face encodes the ID's digits.</p>
+        <div class="qa"><div class="qhead">❓ ASK ABOUT THIS TANGIBLE</div>
+          <div class="qlog" id="qlog"></div>
+          <div class="frow"><input id="qq" maxlength="140" placeholder="Ask about this tangible…" aria-label="Ask about this tangible"><button class="btn" onclick="Ask.ask()">ASK</button></div>
+          <div class="fchips" id="qchips"></div>
+        </div>
+      </div>
+    </div>`;
+    Ask.greet(r);
+    document.getElementById("qq").addEventListener("keydown",e=>{if(e.key==="Enter")Ask.ask()});
+  },
+  setVariant(v){this.variant=v;
+    document.getElementById("vmed").classList.toggle("on",v==="medallion");
+    document.getElementById("vkc").classList.toggle("on",v==="keychain");
+    document.getElementById("pv").innerHTML=previewSVG(this.rec.id,true)+
+      (v==="keychain"?'<p style="font-size:.8em;color:var(--am)">🔗 keychain variant: fused loop on the rim (5&nbsp;mm hole)</p>':"");}
+};
+
+/* ================= downloads ================= */
+const Print3D={
+  mesh(){return medallion(Item.rec.id,Item.variant==="keychain")},
+  fname(ext){return "tangible-"+Item.rec.id.replace(/[^A-Za-z0-9]+/g,"-")+"-"+Item.variant+"."+ext},
+  save(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)},
+  dl(fmt){
+    const m=this.mesh(),nm="tangible-"+Item.rec.id;
+    if(fmt==="stl")this.save(new Blob([stlAscii(m,nm)],{type:"model/stl"}),this.fname("stl"));
+    else if(fmt==="obj")this.save(new Blob([objText(m,nm)],{type:"text/plain"}),this.fname("obj"));
+    else this.save(new Blob([threeMF(m,nm)],{type:"model/3mf"}),this.fname("3mf"));
+    audMsg("Download started: "+this.fname(fmt));
+  },
+  settingsText(){return "SIGNATURE TANGIBLE — "+Item.rec.id+" ("+Item.variant+")\nFiles: STL (universal) / OBJ (backup) / 3MF (modern). No universal G-code exists — slice the STL in your slicer.\n\n"+PROFILES.map(p=>p.name.toUpperCase()+"\n"+p.code).join("\n\n")},
+  copySettings(){this.copy(this.settingsText(),"Print settings copied.")},
+  copyProfile(i){this.copy(PROFILES[i].name+"\n"+PROFILES[i].code,"Profile copied.")},
+  copy(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>audMsg(msg)).catch(()=>{const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");audMsg(msg)}catch(e){}ta.remove()})}
+};
+
+/* ================= AI Q&A (data-grounded, never invents) ================= */
+const Ask={
+  rec:null,
+  greet(r){this.rec=r;
+    this.say("Ask me anything about this tangible — what it is, what will print, which printers work, or what files you get. I answer only from this item's page. ❓","host");
+    const chips=["What is this?","What will print?","Which printers?","What files do I get?","Is this the actual invention?"];
+    document.getElementById("qchips").innerHTML=chips.map(c=>`<button class="fchip" onclick="Ask.chip(${JSON.stringify(c)})">${esc(c)}</button>`).join("");},
+  chip(c){document.getElementById("qq").value=c;this.ask()},
+  say(html,who){const log=document.getElementById("qlog");if(!log)return;const d=document.createElement("div");d.className="fmsg "+who;d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight},
+  ask(){
+    const inp=document.getElementById("qq"),q=inp.value.trim();if(!q||!this.rec)return;
+    this.say(esc(q),"you");inp.value="";
+    const t=q.toLowerCase(),r=this.rec,E=esc,isSpec=r.kind==="spec";
+    let a;
+    if(/what is this|what's this|what is it|describe|about/.test(t))
+      a=`<b>Signature Tangible — ${E(r.id)}</b>: a commemorative 3D-printable medallion <b>for</b> the record "${E(r.title)}" (${isSpec?"Signature spec draft":"public patent record"}${r.cat?", "+E(r.cat):""}). Not a replica of the invention.`;
+    else if(/print|look like|shape|size|dimension/.test(t))
+      a=`It prints as a <b>50&nbsp;mm medallion, ~7&nbsp;mm tall</b>: base coin, raised rim, radial rays and a center emblem whose notch ring encodes this record's ID digits. Keychain variant adds a fused loop with a 5&nbsp;mm hole.`;
+    else if(/printer|machine|fdm|sla|sls|metal|material|filament|resin/.test(t))
+      a=`<b>Any printer that reads STL</b> — FDM (PLA/PETG/ABS), SLA resin, SLS nylon, even metal binder jetting. Pick your machine's profile above, slice the STL in your own slicer, print.`;
+    else if(/file|stl|obj|3mf|g-code|gcode|download|format/.test(t))
+      a=`You get <b>STL</b> (universal — every slicer reads it), <b>OBJ</b> (universal backup) and <b>3MF</b> (modern universal), generated in your browser. There is <b>no universal G-code</b> — slice the STL for your own printer.`;
+    else if(/invention|actual|real device|functional|does it work|replica/.test(t))
+      a=`Honest answer: <b>no</b>. This is a <b>keepsake emblem for the record</b> — it celebrates ${E(r.id)}, it does not replicate or implement the ${isSpec?"draft specification":"patented invention"}.`;
+    else if(/source|record|patent|spec|where.*from|who/.test(t))
+      a=`Source: <b>${E(r.id)}</b>${r.pub&&r.pub!==r.id?" (pub "+E(r.pub)+")":""} — "${E(r.title)}"${r.inventor?", inventor "+E(r.inventor):""}${r.assignee?", "+E(r.assignee):""}. Use the "Open the ${isSpec?"spec draft":"patent record"}" link above for the full record.`;
+    else if(/\bid\b/.test(t))
+      a=`Tangible ID: <b>${E(r.id)}</b> — derived from the record ID, so the same record always generates the same medallion.`;
+    else if(/keychain/.test(t))
+      a=`The <b>keychain variant</b> is the same medallion with a fused loop on the rim (5&nbsp;mm hole). Switch variants above, then download — the loop prints as part of the piece, no assembly.`;
+    else if(/how|use|display/.test(t))
+      a=`Print it flat, base down, no supports. Display it, gift it, or clip the keychain variant to your keys. Collect them by record ID.`;
+    else a=`I can only answer from this tangible's page — try <b>what is this</b>, <b>which printers</b>, <b>what files do I get</b>, or <b>is this the actual invention</b>.`;
+    this.say(a,"host");
+  }
+};
+
+/* ================= tiered read-aloud ================= */
+var AU={q:[],i:0,active:false,paused:false,rate:1,label:""};
+function auVoice(){try{var vs=window.speechSynthesis.getVoices().filter(v=>v.lang&&v.lang.toLowerCase().indexOf("en")===0);
+  if(!vs.length)return null;var fem=/samantha|zira|joanna|amy|emma|kate|serena|moira|tessa|veena|fiona|karen|female|google us english/i;
+  for(var i=0;i<vs.length;i++)if(fem.test(vs[i].name))return vs[i];
+  var g=vs.filter(v=>v.name.toLowerCase().indexOf("google")>=0)[0];return g||vs[0]||null}catch(e){return null}}
+function auChunks(text){var out=[],cur="",parts=String(text).split(/([.!?]["']?(?:\s+|$))/);
+  for(var i=0;i<parts.length;i+=2){var sent=((parts[i]||"")+(parts[i+1]||"")).replace(/\s+/g," ").trim();if(!sent)continue;
+    if(cur&&(cur+" "+sent).length>220){out.push(cur.trim());cur=sent}else cur=cur?cur+" "+sent:sent}
+  if(cur.trim())out.push(cur.trim());return out}
+function auShowBar(s){var b=document.getElementById("aubar");if(b)b.style.display=s?"flex":"none"}
+function auPaintBtn(){var p=document.getElementById("aupause");if(p)p.innerHTML=AU.paused?"▶ Resume":"❚❚ Pause";
+  var l=document.getElementById("aulabel");if(l)l.textContent="Reading: "+AU.label}
+function auSpeakNext(){if(AU.i>=AU.q.length||!AU.active){auStop();return}auShowBar(true);auPaintBtn();
+  var u=new SpeechSynthesisUtterance(AU.q[AU.i]);u.rate=AU.rate;u.lang="en-US";var v=auVoice();if(v)u.voice=v;
+  u.onend=function(){if(!AU.active)return;AU.i++;auSpeakNext()};u.onerror=function(){if(!AU.active)return;AU.i++;auSpeakNext()};
+  window.speechSynthesis.speak(u)}
+function hasSpeech(){try{return("speechSynthesis" in window)&&!!window.speechSynthesis&&typeof window.speechSynthesis.speak==="function"}catch(e){return false}}
+try{if(hasSpeech()){window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){try{window.speechSynthesis.getVoices()}catch(e){}}}}catch(e){}
+function audMsg(m){var t=document.getElementById("audmsg");
+  if(!t){t=document.createElement("div");t.id="audmsg";
+    t.style.cssText="position:fixed;top:12px;left:50%;transform:translateX(-50%);background:#141007;border:1px solid #ff7a1a;color:#ffe1a8;padding:10px 18px;border-radius:10px;z-index:10001;font-size:.9em;max-width:92vw;text-align:center";document.body.appendChild(t)}
+  t.textContent=m;t.style.display="block";clearTimeout(t._h);t._h=setTimeout(function(){t.style.display="none"},2600)}
+var FX={audio:null,active:false,errs:0};
+var TTS_TIERS=[
+ function(t){return "https://code.responsivevoice.org/getvoice.php?t="+encodeURIComponent(t)+"&tl=en-US"},
+ function(t){return "https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q="+encodeURIComponent(t)},
+ function(t){return "https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q="+encodeURIComponent(t)}];
+function fxChunks(text){var out=[],cur="",parts=String(text).split(/([.!?]["']?(?:\s+|$))/);
+  function pw(s){var w=s.split(" "),c="";for(var k=0;k<w.length;k++){var t=(c+" "+w[k]).trim();if(t.length>180){if(c)out.push(c);c=w[k]}else c=t}if(c)out.push(c)}
+  for(var i=0;i<parts.length;i+=2){var s=((parts[i]||"")+(parts[i+1]||"")).replace(/\s+/g," ").trim();if(!s)continue;
+    if(s.length>180){if(cur){out.push(cur);cur=""}pw(s);continue}
+    if(cur&&(cur+" "+s).length>180){out.push(cur);cur=s}else cur=cur?cur+" "+s:s}
+  if(cur)out.push(cur);return out}
+function fxPlay(list,i,tier,retry,proven){if(!FX.active||!AU.active)return;if(i>=list.length){auStop();return}
+  var a;try{a=new Audio(TTS_TIERS[tier](list[i]))}catch(e){auStop();return}
+  try{a.playbackRate=AU.rate||1}catch(e){}FX.audio=a;
+  a.onended=function(){if(AU.active&&FX.active){FX.errs=0;fxPlay(list,i+1,tier,0,true)}};
+  a.onerror=function(){if(!AU.active||!FX.active)return;
+    if(!proven){if(retry<1){fxPlay(list,i,tier,retry+1,false);return}
+      if(tier+1<TTS_TIERS.length){fxPlay(list,i,tier+1,0,false);return}
+      auStop();audMsg("I couldn't reach a voice service — check your connection.");return}
+    if(retry<1){fxPlay(list,i,tier,retry+1,true);return}FX.errs=(FX.errs||0)+1;
+    if(FX.errs>4){auStop();audMsg("The voice service dropped — check your connection.");return}
+    fxPlay(list,i+1,tier,0,true)};
+  try{var pr=a.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
+function fxStart(text){FX.active=true;FX.errs=0;fxPlay(fxChunks(text),0,0,0,false)}
+function fxStop(){FX.active=false;if(FX.audio){try{FX.audio.pause()}catch(e){}FX.audio=null}}
+function auPauseToggle(){if(!AU.active)return;
+  if(FX.active){var fa=FX.audio;try{if(AU.paused){if(fa)fa.play()}else{if(fa)fa.pause()}}catch(e){}AU.paused=!AU.paused;auPaintBtn();return}
+  try{if(AU.paused)window.speechSynthesis.resume();else window.speechSynthesis.pause()}catch(e){}
+  AU.paused=!AU.paused;auPaintBtn()}
+function auStop(){AU.active=false;AU.paused=false;AU.q=[];AU.i=0;fxStop();
+  try{if(window.speechSynthesis)window.speechSynthesis.cancel()}catch(e){}auShowBar(false)}
+const Aud={
+  clean(t){return String(t||"").replace(/[`{}|\\]/g,"").replace(/[ \t\u00a0]+/g," ").trim()},
+  read(text,label){auStop();text=this.clean(text);if(!text){audMsg("Nothing to read here yet.");return}
+    AU.label=label||"";AU.q=auChunks(AU.label+". "+text);AU.i=0;AU.active=true;AU.paused=false;
+    if(hasSpeech()){try{window.speechSynthesis.cancel()}catch(e){}auSpeakNext()}
+    else{auShowBar(true);auPaintBtn();fxStart(AU.label+". "+text);audMsg("This browser has no built-in voice — reading with the online voice instead.")}},
+  readItem(){const r=Item.rec;if(!r)return;
+    this.read("Signature Tangible for "+r.id+". "+r.title+". Category: "+(r.cat||"general")+". "+
+      "A commemorative 3D-printable medallion for this record — not a functional replica of the invention. "+
+      "Download the free STL, OBJ or 3MF file, slice it in your slicer with the profile for your printer, and print it.",
+      "Tangible "+r.id)}
+};
+
+/* ================= boot ================= */
+document.getElementById("profiles").innerHTML=PROFILES.map((p,i)=>
+  `<div class="prof"><h4>${esc(p.name)}</h4><code>${esc(p.code)}</code><button class="btn ghost" style="margin-top:8px;padding:6px 14px;font-size:.8em" onclick="Print3D.copyProfile(${i})">📋 COPY</button></div>`).join("");
+document.addEventListener("DOMContentLoaded",()=>App.boot());
+</script>
+</body>
+</html>

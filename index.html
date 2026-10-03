@@ -11,6 +11,9 @@
 "url":"https://justinahiggins614-cmyk.github.io/signature-3d-print/",
 "description":"3D-printable keepsake medallions for every Signature spec draft and public patent record. Free STL/OBJ/3MF downloads."}
 </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Dataset","name":"The Signature 3D Print Depository","creator":{"@type":"Person","name":"Justin Addam Higgins"}}
+</script>
 <style>
 :root{--bg:#0b0d10;--card:#14181d;--card2:#1a1f26;--line:#2b313a;--txt:#e9e5d9;--dim:#9b958a;
 --or:#ff7a1a;--am:#ffb300;--cy:#57d0e6;--gd:#ffcf4d;--ok:#7dd87d}
@@ -111,10 +114,19 @@ footer .prov{color:var(--am)}
 border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;font-size:.9em}
 #aubar button{background:#1d150a;border:1px solid var(--or);color:var(--or);border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:700}
 .staticcount{color:var(--dim);font-size:.85em}
+/* FIX-03: count tickers collapse on mobile (<768px); desktop unchanged */
+.statscollapse{border:0;margin:0;padding:0}
+.statscollapse>summary{list-style:none;cursor:pointer;font-size:.85em;color:var(--dim);text-align:center;padding:9px 12px;border:1px dashed var(--line);border-radius:8px;background:var(--card);max-width:340px;margin:12px auto 0}
+.statscollapse>summary::-webkit-details-marker{display:none}
+.statscollapse>summary::before{content:"\25B8  "}
+.statscollapse[open]>summary::before{content:"\25BE  "}
+@media(min-width:768px){.statscollapse>summary{display:none}}
+/* FIX-05: sticky A-Z bar with opaque background */
+#az{position:sticky;top:0;z-index:40;background:#0b0d10;padding:10px 2px}
 </style>
 </head>
 <body>
-<div class="jahnet"><span class="jahnet-t">THE JAH NETWORK</span><a href="https://justinahiggins614-cmyk.github.io/jah-ai-models/">The Signature AI Phone Book</a><a href="https://justinahiggins614-cmyk.github.io/jah-calculator/">Calculator</a><a href="https://justinahiggins614-cmyk.github.io/jah-dictionary/">Dictionary</a><a href="https://justinahiggins614-cmyk.github.io/jah-wiki/">JAH Wiki</a><a href="https://justinahiggins614-cmyk.github.io/jah-n-wiki-leaks/">JAH-N Wiki</a><a href="https://justinahiggins614-cmyk.github.io/cyber-patent-catalog/">Patent Catalog</a><a href="https://justinahiggins614-cmyk.github.io/signature-one-archive/specs.html">Spec Catalog</a><a href="https://justinahiggins614-cmyk.github.io/signature-llama/">Signature Llama</a><a href="https://justinahiggins614-cmyk.github.io/jah-computer-systems/">PC Depository</a><a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">Cyber Mega-Mall</a><a href="https://justinahiggins614-cmyk.github.io/signature-university/">Signature University</a><a href="https://justinahiggins614-cmyk.github.io/signature-books/">Book Depository</a><a href="https://justinahiggins614-cmyk.github.io/signature-comics/">Comic Store</a><a href="https://justinahiggins614-cmyk.github.io/signature-newspapers/">Global Newspaper Archive</a><span class="cur" aria-current="page">YOU ARE HERE: 3D PRINT DEPOSITORY</span><a href="https://justinahiggins614-cmyk.github.io/signature-backend/">Mad Scientist Lab</a><a href="https://justinahiggins614-cmyk.github.io/signature-boundless-generators/">Boundless Generator Archive</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-mixlab/">AI Mix Lab</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-olypics/">AI Olypics</a><a href="https://justinahiggins614-cmyk.github.io/signature-chip-maker/">Chip Maker and Archive</a><a href="https://justinahiggins614-cmyk.github.io/signature-app-archive/">App Archive</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-robot-matcher/">AI Robot Matcher</a><a href="https://justinahiggins614-cmyk.github.io/signature-experiment-solver/">Experiment Solver</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-image-video-maker/">Signature AI Pixel</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-song-maker/">Signature Music Studio</a></div>
+<nav class="jahnet" aria-label="JAH Network Global Ecosystem" role="navigation"><span class="jahnet-t">THE JAH NETWORK</span><a href="https://justinahiggins614-cmyk.github.io/jah-ai-models/">The Signature AI Phone Book</a><a href="https://justinahiggins614-cmyk.github.io/jah-calculator/">Calculator</a><a href="https://justinahiggins614-cmyk.github.io/jah-dictionary/">Dictionary</a><a href="https://justinahiggins614-cmyk.github.io/jah-wiki/">JAH Wiki</a><a href="https://justinahiggins614-cmyk.github.io/jah-n-wiki-leaks/">JAH-N Wiki</a><a href="https://justinahiggins614-cmyk.github.io/cyber-patent-catalog/">Patent Catalog</a><a href="https://justinahiggins614-cmyk.github.io/signature-one-archive/specs.html">Spec Catalog</a><a href="https://justinahiggins614-cmyk.github.io/signature-llama/">Signature Llama</a><a href="https://justinahiggins614-cmyk.github.io/jah-computer-systems/">PC Depository</a><a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">Cyber Mega-Mall</a><a href="https://justinahiggins614-cmyk.github.io/signature-university/">Signature University</a><a href="https://justinahiggins614-cmyk.github.io/signature-books/">Book Depository</a><a href="https://justinahiggins614-cmyk.github.io/signature-comics/">Comic Store</a><a href="https://justinahiggins614-cmyk.github.io/signature-newspapers/">Global Newspaper Archive</a><span class="cur" aria-current="page">YOU ARE HERE: 3D PRINT DEPOSITORY</span><a href="https://justinahiggins614-cmyk.github.io/signature-backend/">Mad Scientist Lab</a><a href="https://justinahiggins614-cmyk.github.io/signature-boundless-generators/">Boundless Generator Archive</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-mixlab/">AI Mix Lab</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-olypics/">AI Olypics</a><a href="https://justinahiggins614-cmyk.github.io/signature-chip-maker/">Chip Maker and Archive</a><a href="https://justinahiggins614-cmyk.github.io/signature-app-archive/">App Archive</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-robot-matcher/">AI Robot Matcher</a><a href="https://justinahiggins614-cmyk.github.io/signature-experiment-solver/">Experiment Solver</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-image-video-maker/">Signature AI Pixel</a><a href="https://justinahiggins614-cmyk.github.io/signature-ai-song-maker/">Signature Music Studio</a></nav>
 
 <div class="sister">🏭 <b>THE TANGIBLE WING</b> — this is the sister site of the <a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">Signature Cyber Mega-Mall</a>. The mall is the <b>software</b> side — downloads, AIs, programs. This depository is the <b>tangible</b> side — things you can hold, printed on your own 3D printer.</div>
 
@@ -123,8 +135,10 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <h1>PRINT THE <span class="o">TANGIBLE</span> NETWORK</h1>
 <p>A 3D-printable keepsake medallion for <b>every</b> Signature spec draft and <b>every</b> public patent record across the network. Free downloads, every printer type covered, marching to one million tangibles.</p>
 <div class="honest"><b>▲ HONEST LABEL — read this first.</b> Each "Signature Tangible" is a <b>commemorative emblem FOR the record</b> — an embossed keepsake medallion whose relief pattern is generated from the record's ID. It is <b>NOT</b> a functional replica of the invention the record describes. Printing the medallion for a patent does not print the patented device.</div>
+<details class="statscollapse"><summary>Counts</summary>
 <div class="counts" id="livecounts"><span class="chip">counting tangibles…</span></div>
 <p class="staticcount">561,929 printable tangibles indexed (518,355 spec · 43,574 patent), as of 2026-10-02. Free STL, OBJ and 3MF downloads — marching to 1,000,000.</p>
+</details>
 </header>
 
 <div class="wrap">

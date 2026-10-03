@@ -20,14 +20,27 @@ TODAY = datetime.date.today().isoformat()
 
 def load():
     items = []  # (id, title, kind)
+    seen = set()
+    def add(iid, title, kind):
+        iid = iid or ""
+        if not iid or (kind, iid) in seen:
+            return
+        seen.add((kind, iid))
+        items.append((iid, title, kind))
     with gzip.open(SPEC_SEARCH, "rt") as z:
         for line in z:
+            line = line.strip()
+            if not line:
+                continue
             r = json.loads(line)
-            items.append((r[0], r[1], "spec"))
+            add(r[0], r[1], "spec")
     with gzip.open(PAT_SEARCH, "rt") as z:
         for line in z:
+            line = line.strip()
+            if not line:
+                continue
             for r in json.loads(line):
-                items.append((r[9] or r[0], r[1] or "Untitled patent record", "pat"))
+                add(r[9] or r[0], r[1] or "Untitled patent record", "pat")
     return items
 
 def esc(s): return html.escape(s or "", quote=True)

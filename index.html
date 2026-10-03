@@ -157,7 +157,7 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <div class="honest"><b>▲ HONEST LABEL — read this first.</b> Each "Signature Tangible" is a <b>commemorative emblem FOR the record</b> — an embossed keepsake medallion whose relief pattern is generated from the record's ID. It is <b>NOT</b> a functional replica of the invention the record describes. Printing the medallion for a patent does not print the patented device.</div>
 <details class="statscollapse"><summary>Counts</summary>
 <div class="counts" id="livecounts"><span class="chip">counting tangibles…</span></div>
-<p class="staticcount">561,929 printable tangibles indexed (518,355 spec · 43,574 patent), as of 2026-10-02. Free STL, OBJ and 3MF downloads — marching to 1,000,000.</p>
+<p class="staticcount">623,808 printable tangibles indexed (575,169 spec · 48,639 patent), as of 2026-10-02. Free STL, OBJ and 3MF downloads — marching to 1,000,000.</p>
 </details>
 </header>
 
@@ -254,25 +254,44 @@ function setItemLD(r){
 /* ================= data layer ================= */
 const DB={
   specs:null,pats:null,rows:[],specById:{},patById:{},patByPub:{},cats:[],
-  counts:{specs:518355,patents:43574},
+  counts:{specs:0,patents:0},
   async load(){
     if(this.rows.length)return this.rows;
+    /* specs.search.json.gz is JSONL — one JSON row per line. Never JSON.parse the whole file. */
+    this.specs=[];
     try{
-      const s=await gz(SPEC_SEARCH);this.specs=JSON.parse(s);
+      const s=await gz(SPEC_SEARCH),lines=s.split("\n");
+      for(let i=0;i<lines.length;i++){
+        const ln=lines[i].trim();if(!ln)continue;
+        try{const r=JSON.parse(ln);if(Array.isArray(r)&&r[0])this.specs.push(r);}catch(e){}
+      }
     }catch(e){this.specs=[]}
+    /* patents.search.json.gz is ONE JSON array of row-arrays — never .flat() it. */
+    this.pats=[];
     try{
-      const p=await gz(PAT_SEARCH);
-      const inner=JSON.parse(p);this.pats=Array.isArray(inner[0])?inner.flat():inner;
+      const inner=JSON.parse(await gz(PAT_SEARCH));
+      if(Array.isArray(inner))this.pats=inner;
     }catch(e){this.pats=[]}
-    const catset={};
-    for(const r of this.specs){const rec={id:r[0],title:r[1],kind:"spec",cat:r[4]||"General"};
-      this.rows.push(rec);this.specById[rec.id]=rec;if(rec.cat)catset[rec.cat]=1;}
-    for(const r of this.pats){const rec={id:r[9]||r[0],pub:r[0],title:r[1]||"Untitled patent record",kind:"pat",
-      cat:r[5]||"Patents",inventor:r[3]||"",assignee:r[4]||"",date:r[6]||""};
-      this.rows.push(rec);this.patById[rec.id]=rec;if(rec.pub)this.patByPub[rec.pub]=rec;}
+    const catset={},seen={},self=this;
+    let nspec=0,npat=0;
+    function push(rec){
+      const k=rec.kind+":"+rec.id;if(seen[k])return false;seen[k]=1;
+      self.rows.push(rec);return true;
+    }
+    for(const r of this.specs){
+      const rec={id:String(r[0]),title:r[1]||"Untitled spec record",kind:"spec",cat:r[4]||"General"};
+      if(push(rec)){nspec++;self.specById[rec.id]=rec;if(rec.cat)catset[rec.cat]=1;}
+    }
+    for(const r of this.pats){
+      if(!Array.isArray(r))continue;
+      const id=r[9]||r[0];if(!id)continue;
+      const rec={id:String(id),pub:r[0]?String(r[0]):"",title:r[1]||"Untitled patent record",kind:"pat",
+        cat:r[5]||"Patents",inventor:r[3]||"",assignee:r[4]||"",date:r[6]||""};
+      if(push(rec)){npat++;self.patById[rec.id]=rec;if(rec.pub)self.patByPub[rec.pub]=rec;}
+    }
     this.cats=Object.keys(catset).sort();
-    if(this.specs.length)this.counts.specs=this.specs.length;
-    if(this.pats.length)this.counts.patents=this.pats.length;
+    /* Real counts: only records that parsed, carried an ID, and survived dedupe. */
+    this.counts.specs=nspec;this.counts.patents=npat;
     return this.rows;
   },
   resolve(id){
@@ -283,6 +302,9 @@ const DB={
 
 /* ================= top-view preview (true design footprint) ================= */
 function previewSVG(id,big){
+  if(id===undefined||id===null||id===""){
+    return `<svg viewBox="-30 -30 60 60" role="img" aria-label="Design preview unavailable — record ID missing"><circle r="25" fill="#181d24" stroke="#ff7a1a" stroke-width="1.2"/><text y="-1" text-anchor="middle" fill="#9b958a" font-size="4.5" font-family="monospace">preview</text><text y="5.5" text-anchor="middle" fill="#9b958a" font-size="4.5" font-family="monospace">unavailable</text></svg>`;
+  }
   const P=medallionParams(id),S=big?1:1;
   const sc=v=>(v).toFixed(2);
   let rays="";

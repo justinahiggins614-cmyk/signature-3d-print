@@ -90,6 +90,20 @@ color:#ffe1a8;background:#241a06;font-size:.92em;text-align:left}
 .badge{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.75em;font-weight:800;letter-spacing:.08em;margin-right:8px}
 .badge.spec{background:#0f2a33;color:var(--cy);border:1px solid var(--cy)}
 .badge.pat{background:#2a1c08;color:var(--am);border:1px solid var(--am)}
+/* JAH NETWORK 10-FIX CONSISTENCY PASS (additive — no restyle of existing components) */
+.hero .kicker2{font-size:.72em;letter-spacing:.32em;color:var(--dim);text-transform:uppercase;margin:6px 0 0}
+.stbadge{display:inline-block;padding:3px 12px;border-radius:999px;font-size:.72em;font-weight:800;letter-spacing:.08em;margin-right:8px;white-space:nowrap;vertical-align:middle}
+.stbadge.draft{background:#0f2a33;color:var(--cy);border:1px solid var(--cy)}
+.stbadge.pub{background:#2a1c08;color:var(--am);border:1px solid var(--am)}
+.recpanel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#0a0c0e;font-size:.8em}
+.recpanel .rpid{font-family:monospace;color:var(--or)}
+.recpanel .rpver{color:var(--dim)}
+.recpanel button{background:#181d24;border:1px solid var(--line);color:var(--txt);border-radius:7px;padding:5px 11px;font-size:.82em;cursor:pointer;font-weight:700;letter-spacing:.04em}
+.recpanel button:hover{border-color:var(--or);color:var(--or)}
+.prov{font-size:.78em;color:var(--dim);margin:8px 0}
+.jaicard{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:12px 0;font-size:.88em;background:#0a0c0e}
+.jaicard b{color:var(--or)}
+.ownerlab{font-size:.7em;font-weight:800;letter-spacing:.06em;color:var(--am);margin-left:8px;white-space:nowrap}
 .kv{display:grid;grid-template-columns:130px 1fr;gap:6px 12px;font-size:.92em;margin:12px 0}
 .kv dt{color:var(--dim)}
 .dlrow{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
@@ -152,6 +166,7 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 
 <header class="hero">
 <p class="kicker">The Signature 3D Print Depository</p>
+<p class="kicker2">Site 15 of 25 · The Jah Network</p>
 <h1>PRINT THE <span class="o">TANGIBLE</span> NETWORK</h1>
 <p>A 3D-printable keepsake medallion for <b>every</b> Signature spec draft and <b>every</b> public patent record across the network. Free downloads, every printer type covered, marching to one million tangibles.</p>
 <div class="honest"><b>▲ HONEST LABEL — read this first.</b> Each "Signature Tangible" is a <b>commemorative emblem FOR the record</b> — an embossed keepsake medallion whose relief pattern is generated from the record's ID. It is <b>NOT</b> a functional replica of the invention the record describes. Printing the medallion for a patent does not print the patented device.</div>
@@ -407,7 +422,8 @@ const Finder={
     for(const k of kws){if(r.id.toLowerCase()===k)s+=10;else if(r.id.toLowerCase().includes(k))s+=6;
       if(t.includes(k))s+=k.length>5?3:2;}return s},
   say(html,who){const log=document.getElementById("flog");const d=document.createElement("div");d.className="fmsg "+who;d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight},
-  greet(){this.say(JIT.html((window.JAHtalk?JAHtalk.greet(JIT_PROFILE_FINDER):"Hi! I'm the <b>tangible finder</b> 🏭 — describe what you'd like to hold in plain words and I'll walk you to the right medallion. Every spec and patent record has one.")),"host");
+  greet(){this.say(jnAICardHTML(JIT_PROFILE_FINDER),"host");
+    this.say(JIT.html((window.JAHtalk?JAHtalk.greet(JIT_PROFILE_FINDER):"Hi! I'm the <b>tangible finder</b> 🏭 — describe what you'd like to hold in plain words and I'll walk you to the right medallion. Every spec and patent record has one.")),"host");
     const chips=["solar power","water pump","kitchen tool","a gift","robotics"];
     document.getElementById("fchips").innerHTML=chips.map(c=>`<button class="fchip" onclick="Finder.chip(${JSON.stringify(c)})">${esc(c)}</button>`).join("");
     document.getElementById("fq").addEventListener("keydown",e=>{if(e.key==="Enter")Finder.ask()});},
@@ -478,7 +494,7 @@ const App={
     g.insertAdjacentHTML("beforeend",slice.map(r=>
       `<div class="card" onclick="location.href='?print=${encodeURIComponent(r.id)}'"><div class="pvwrap">${previewSVG(r.id,false)}</div>
       <div class="sku">${esc(r.id)}</div><h4>${esc(r.title.length>70?r.title.slice(0,70)+"…":r.title)}</h4>
-      <div class="meta">${r.kind==="spec"?'<span class="badge spec">SPEC</span>':'<span class="badge pat">PATENT</span>'} ${esc(r.cat)}</div></div>`).join(""));
+      <div class="meta">${r.kind==="spec"?'<span class="stbadge draft">DRAFT SPECIFICATION</span>':'<span class="stbadge pub">PUBLIC RECORD</span>'} ${esc(r.cat)}</div></div>`).join(""));
     this.shown+=slice.length;
     document.getElementById("morebtn").style.display=this.shown>=(this.grid||[]).length?"none":"";
     /* FIX-05: real-time match feedback */
@@ -495,6 +511,44 @@ const App={
   }
 };
 
+/* ===== JAH NETWORK 10-FIX: shared record helpers (additive) ===== */
+const JN_ENGINE_LINE="<b>Engine:</b> Signature Llama (live where available) with the built-in JAHtalk on-device fallback — it always answers.";
+function jnPanelHTML(id,ver){return `<div class="recpanel" role="group" aria-label="Record actions"><span class="rpid">ID: ${esc(id)}</span><span class="rpver">VERSION ${esc(ver||"v1.0")}</span>`+
+ `<button data-rp="open">OPEN</button><button data-rp="src">SOURCE</button><button data-rp="share">SHARE</button>`+
+ `<button data-rp="copy">COPY</button><button data-rp="dl">DOWNLOAD</button><button data-rp="read">READ ALOUD</button></div>`}
+function jnAICardHTML(prof){
+  const duties=(prof.abilities||[]).map(x=>esc(x)).join("; ");
+  return `<div class="jaicard"><b>🤖 AI IDENTITY</b><br><b>Name:</b> ${esc(prof.name||"AI assistant")} — ${esc(prof.description||"")}`+
+   (duties?`<br><b>Duties:</b> ${duties}`:"")+`<br>${JN_ENGINE_LINE}</div>`;
+}
+function jnShareLink(url){
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(()=>alert("Link copied."),()=>prompt("Copy this link:",url));}
+  else prompt("Copy this link:",url);
+}
+function jnDownloadJSON(name,obj){
+  const blob=new Blob([JSON.stringify(obj,null,1)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
+}
+function jnWireItemPanel(){
+  const r=Item.rec;if(!r)return;
+  const panel=document.querySelector("#itemview .recpanel");if(!panel)return;
+  const isSpec=r.kind==="spec";
+  const deep=HOME+"?print="+encodeURIComponent(r.id);
+  const srcUrl=isSpec?"https://justinahiggins614-cmyk.github.io/signature-one-archive/specs.html?spec="+encodeURIComponent(r.id)
+    :"https://justinahiggins614-cmyk.github.io/cyber-patent-catalog/?patent="+encodeURIComponent(r.pub||r.id);
+  panel.querySelectorAll("button").forEach(b=>{
+    const a=b.getAttribute("data-rp");
+    b.onclick=()=>{
+      if(a==="open")location.href=deep;
+      else if(a==="src")window.open(srcUrl,"_blank","noopener");
+      else if(a==="share")jnShareLink(deep);
+      else if(a==="copy")Print3D.copySettings();
+      else if(a==="dl")jnDownloadJSON(r.id+".tangible.json",{record:r.id,title:r.title,kind:r.kind,category:r.cat||"",variant:Item.variant,files:["STL","OBJ","3MF"],version:"v1.0"});
+      else if(a==="read")Aud.readItem();
+    };
+  });
+}
 /* ================= item view ================= */
 const PROFILES=[
  {name:"FDM · PLA — most home printers",code:"Layer height: 0.20 mm\nWalls: 3\nInfill: 15% grid\nNozzle: 200-210 C\nBed: 60 C\nSupports: none\nBrim: optional 5 mm\nOrientation: flat, base down"},
@@ -526,6 +580,7 @@ const Item={
       </div>
       <div>
         ${isSpec?'<span class="badge spec">SPEC TANGIBLE</span>':'<span class="badge pat">PATENT TANGIBLE</span>'}
+        ${isSpec?'<span class="stbadge draft">DRAFT SPECIFICATION</span>':'<span class="stbadge pub">PUBLIC RECORD</span>'}
         <h3>Signature Tangible — ${esc(r.id)}</h3>
         <p style="color:var(--dim)">${esc(r.title)}</p>
         <div class="honest" style="max-width:none"><b>▲ HONEST LABEL.</b><br>
@@ -540,6 +595,9 @@ const Item={
           <dt>Source record</dt><dd><a href="${srcUrl}" target="_blank" rel="noopener">Open the ${isSpec?"spec draft":"patent record"} ↗</a></dd>
           <dt>Deep link</dt><dd style="color:#9fc2ff">?print=${esc(r.id)}</dd>
         </dl>
+        ${jnPanelHTML(r.id,"v1.0")}
+        <div class="prov">Provenance: medallion geometry generated in your browser from record ID ${esc(r.id)} (deterministic — the same ID always yields the same medallion) · source record: ${isSpec?"Signature spec draft":"public patent record"}</div>
+        ${!isSpec?`<div class="prov">PUBLIC RECORD · source owner: ${esc(r.assignee||r.inventor||"the public patent publication")}</div>`:""}
         <h4 style="color:var(--or);letter-spacing:.08em">⬇ PRINT FILES — generated in your browser, free</h4>
         <p class="dlwarn"><b>COMMERCIAL/TECHNICAL NOTE: THIS IS A COMMEMORATIVE MEDALLION, NOT THE INVENTION.</b></p>
         <div id="dlspec" class="dlspec"></div>
@@ -574,6 +632,7 @@ const Item={
     document.getElementById("profselect_item").innerHTML=profOptionList();
     profPicker("profselect_item");
     this.renderSpec();
+    jnWireItemPanel();
   },
   /* GEMINI-15: BEFORE YOU DOWNLOAD — real mesh metrics, honest estimates */
   renderSpec(){
@@ -643,6 +702,7 @@ const Print3D={
 const Ask={
   rec:null,
   greet(r){this.rec=r;
+    this.say(jnAICardHTML(JIT_PROFILE_ASK),"host");
     this.say(JIT.html((window.JAHtalk?JAHtalk.greet(JIT_PROFILE_ASK):"Ask me anything about this tangible — what it is, what will print, which printers work, or what files you get. I answer only from this item's page. ❓")),"host");
     const chips=["What is this?","What will print?","Which printers?","What files do I get?","Is this the actual invention?"];
     document.getElementById("qchips").innerHTML=chips.map(c=>`<button class="fchip" onclick="Ask.chip(${JSON.stringify(c)})">${esc(c)}</button>`).join("");},

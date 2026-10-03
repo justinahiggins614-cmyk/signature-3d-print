@@ -1,0 +1,63 @@
+# The Signature 3D Print Depository — AI guide (llms.txt)
+
+Site 15 of 25 · THE JAH NETWORK · https://justinahiggins614-cmyk.github.io/signature-3d-print/
+Sister site: The Signature Cyber Mega-Mall (software side); this is the TANGIBLE side.
+
+## What this site is
+A 3D-printable keepsake medallion for every Signature spec draft and every public
+patent record. Each "Signature Tangible" is a COMMEMORATIVE EMBLEM FOR ITS RECORD —
+an embossed medallion whose relief pattern is generated from the record's ID.
+It is NOT a functional replica of the invention the record describes. Never present
+it as one. Spec drafts are marked DRAFT (not filed, not granted). Patent records are
+public records with their publication identifiers shown.
+
+## Counts (authoritative: tangibles-manifest.json)
+- 696,912 tangibles indexed (643,512 spec + 53,400 patent), as of 2026-10-03
+- Marching to 1,000,000. Manifest carries INDEX_VERSION + INDEX_HASH + COUNT_UPDATED.
+
+## IDs
+- The permanent tangible ID IS the source record ID: JAH-SPEC-######, JAH-PAT-######,
+  or a patent publication number (e.g. US7654321B2). One source record <-> one medallion.
+- Deep link: ?print=<SOURCE_ID>  (e.g. ?print=JAH-SPEC-000123)
+- Raw JSON: ?print=<SOURCE_ID>&format=json
+- Canonical URL: https://justinahiggins614-cmyk.github.io/signature-3d-print/?print=<SOURCE_ID>
+
+## Geometry (deterministic, client-side)
+- Medallion generated in the visitor's browser from the record ID: FNV-1a hash ->
+  xorshift seed -> base coin (50 mm diameter, 3 mm) + rim + 8-16 radial rays +
+  center emblem + ID-digit notch ring (~7.4 mm tall). Keychain variant adds a fused
+  loop (5 mm hole). Full spec: docs/GEOMETRY_SPEC.md. Reference: code/mesh.py.
+- Same source ID + same geometry version (1.0) + same variant = identical mesh,
+  cross-verified Python/JS (code/qa/test_determinism.py). No mesh files are stored.
+- Downloads: STL (universal), OBJ (backup), 3MF (modern). No universal G-code exists;
+  users slice the STL in their own slicer. Slicer profiles on-site are STARTING POINTS,
+  not factory profiles.
+
+## Machine-readable
+- tangibles-manifest.json — authoritative manifest (counts, index hashes, schema refs)
+- ai-manifest.json — this file's machine-readable twin
+- signature-tangible-schema.json — JAH-TANGIBLE-RECORD/1.0 (JSON Schema)
+- api.json — summary counts + deep-link pattern
+- data/counts.json — tiny count snapshot for fast loading
+- sitemap.xml — index (sitemap-pages.xml + 14 tangible shards, 50k URLs each)
+- browse/ — 349 static shard pages (2000 tangibles each, prev/next)
+
+## AI rules — READ BEFORE ANSWERING
+1. DO NOT INVENT TANGIBLE RECORDS. Answer only from indexed records (?print=<id> must
+   resolve in the archive). If nothing matches: NO MATCHING TANGIBLE FOUND.
+2. Distinguish SOURCE FACTS (record title, ID, status) from the GENERATED OBJECT
+   (commemorative medallion). Say "commemorative medallion for the record", never
+   "the invention" or "the device".
+3. Never claim a medallion was physically printed or print-tested. Mesh is
+   digitally validated (deterministic generator); PRINT_TESTED = false archive-wide.
+4. Spec records are DRAFTS — never say filed, granted, or patented about a spec.
+5. The site's AI helpers (Tangible Finder, Tangible Q&A) are site helpers with no
+   canon JAH-AI ID; they never invent records.
+6. EDITION-style errors: TANGIBLE_NOT_FOUND (unknown ID), INDEX_UNAVAILABLE
+   (search index failed to load), INVALID_ID (malformed ID).
+
+## Search
+Homepage search filters the live index by title, ID, and category; tabs filter
+SPEC vs PATENT; A-Z bar filters by title initial; category dropdown lists real
+categories from the index. The Finder scores title+ID+category and returns only
+real indexed records with links.

@@ -1,0 +1,79 @@
+{
+ "manifest": "tangibles-manifest",
+ "manifest_version": "1.0",
+ "site": "The Signature 3D Print Depository (provisional name)",
+ "url": "https://justinahiggins614-cmyk.github.io/signature-3d-print/",
+ "network": "THE JAH NETWORK",
+ "site_number": 15,
+ "site_version": "1.0",
+ "sister_site": "https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/",
+ "sister_role": "tangible wing (this site) <-> software mall (sister)",
+ "counts": {
+  "total": 697163,
+  "spec": 643512,
+  "patent": 53651,
+  "goal": 1000000,
+  "reconciliation": "643512 + 53651 = 697163"
+ },
+ "count_updated": "2026-10-03",
+ "generated_at": "2026-10-03T15:05:15Z",
+ "catalog_version": "2026-10-03",
+ "archive_version": "2026-10-03",
+ "index": {
+  "index_version": "search-index-2026-10-03",
+  "sources": [
+   {
+    "kind": "spec",
+    "file": "signature-one-archive/data/index/specs.search.json.gz",
+    "sha256": "b58d53ccb6dde16e00736e901bd71822c0819b0cb3da41c8c5970b50e24f77f7",
+    "rows_indexed": 643512
+   },
+   {
+    "kind": "patent",
+    "file": "cyber-patent-catalog/data/patents.search.json.gz",
+    "sha256": "ed0162d8eed23ad2c36437e0a819bb03f778b88be535566d778383bbf0f391da",
+    "rows_indexed": 53651,
+    "dedupe_note": "Patent rows are deduped by record ID; any upstream duplicate IDs are reported, first record kept."
+   }
+  ]
+ },
+ "identity": {
+  "tangible_id_standard": "The permanent tangible ID IS the source record ID (JAH-SPEC-######, JAH-PAT-######, or patent publication number). One source record <-> one medallion. No parallel ID namespace exists by design.",
+  "deep_link": "https://justinahiggins614-cmyk.github.io/signature-3d-print/?print=<SOURCE_ID>",
+  "raw_json": "https://justinahiggins614-cmyk.github.io/signature-3d-print/?print=<SOURCE_ID>&format=json",
+  "canonical_url_form": "https://justinahiggins614-cmyk.github.io/signature-3d-print/?print=<SOURCE_ID>",
+  "source_types": {
+   "SPEC": "Signature spec draft \u2014 status DRAFT (not filed, not a granted patent)",
+   "PATENT": "Public patent record \u2014 status PUBLIC_RECORD (publication identifier shown)"
+  }
+ },
+ "object": {
+  "object_purpose": "COMMEMORATIVE_RECORD_EMBLEM",
+  "functional_replica": false,
+  "honesty": "Each tangible is a commemorative emblem FOR its record \u2014 not a functional replica of the invention described.",
+  "generator": "deterministic client-side medallion generator (assets/mesh3d.js; reference: code/mesh.py)",
+  "geometry_version": "1.0",
+  "geometry_spec": "docs/GEOMETRY_SPEC.md",
+  "determinism": "same source ID + same geometry version + same variant = identical mesh (cross-verified Python/JS, code/qa/test_determinism.py)",
+  "dimensions_mm": {
+   "diameter": 50,
+   "height": 7.4,
+   "keychain_height": 14.5,
+   "note": "measured from generated mesh bounding box; keychain variant adds fused loop"
+  },
+  "formats": [
+   "stl",
+   "obj",
+   "3mf"
+  ],
+  "gcode": "No universal G-code is shipped; slice the STL in your own slicer."
+ },
+ "schema": "signature-tangible-schema.json",
+ "schema_version": "JAH-TANGIBLE-RECORD/1.0",
+ "api": "api.json",
+ "ai_manifest": "ai-manifest.json",
+ "llms": "llms.txt",
+ "sitemap": "sitemap.xml (index of sitemap-pages.xml + tangible shards)",
+ "browse": "browse/ (static shard pages, 2000 tangibles each)",
+ "updated": "2026-10-03"
+}

@@ -181,7 +181,7 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <div class="honest"><b>▲ HONEST LABEL — read this first.</b> Each "Signature Tangible" is a <b>commemorative emblem FOR the record</b> — an embossed keepsake medallion whose relief pattern is generated from the record's ID. It is <b>NOT</b> a functional replica of the invention the record describes. Printing the medallion for a patent does not print the patented device.</div>
 <details class="statscollapse"><summary>Counts</summary>
 <div class="counts" id="livecounts"><span class="chip">counting tangibles…</span></div>
-<p class="staticcount">623,808 printable tangibles indexed (575,169 spec · 48,639 patent), as of 2026-10-02. Free STL, OBJ and 3MF downloads — marching to 1,000,000.</p>
+<p class="staticcount" id="staticcount">697,163 printable tangibles indexed (643,512 spec · 53,651 patent), as of 2026-10-03. Free STL, OBJ and 3MF downloads — marching to 1,000,000.</p>
 </details>
 </header>
 
@@ -206,7 +206,7 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <button class="tab" data-s="pat" onclick="App.setSrc('pat')">PATENT TANGIBLES</button>
 </div>
 <select id="catchip" aria-label="Filter by category" onchange="App.setCat(this.value)"><option value="">All categories</option></select>
-<input type="search" id="q" placeholder="Search 560,000+ tangibles — title, ID, category…" aria-label="Search tangibles">
+<input type="search" id="q" placeholder="Search the tangibles — title, ID, category…" aria-label="Search tangibles">
 </div>
 <div class="fchips" id="az"></div>
 </div>
@@ -222,7 +222,7 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <section class="sec" id="guidesec">
 <h2>🖨 Print guide <span class="sub">From download to object — any printer, any material</span></h2>
 <div class="guide">
-<div class="gstep"><h3>1 · PICK A TANGIBLE</h3><p>Search or browse the vault, open any item. Every one of the 560,000+ records has its own printable medallion, generated fresh from its ID.</p></div>
+<div class="gstep"><h3>1 · PICK A TANGIBLE</h3><p>Search or browse the vault, open any item. Every one of the <b class="dyntotal">697,163</b> records has its own printable medallion, generated fresh from its ID.</p></div>
 <div class="gstep"><h3>2 · DOWNLOAD A UNIVERSAL FILE</h3><p><b>STL</b> (every slicer reads it), <b>OBJ</b> (universal backup), or <b>3MF</b> (modern universal). The mesh is generated in your browser — nothing to wait for, no account, no cost.</p></div>
 <div class="gstep"><h3>3 · SLICE FOR YOUR PRINTER</h3><p>There is <b>no universal G-code</b> — G-code is baked for one printer model. Slice the STL in your own slicer with the profile below for your machine, then print.</p></div>
 <div class="gstep"><h3>4 · HOLD IT</h3><p>Medallion: 50&nbsp;mm across, ~7&nbsp;mm tall — a desk piece. Keychain variant: same medallion with a fused loop. Display it, gift it, collect them.</p></div>
@@ -242,7 +242,7 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <footer>
 <p><b style="color:var(--or)">THE SIGNATURE 3D PRINT DEPOSITORY</b> <span class="prov">— provisional name, the owner confirms the final name.</span></p>
 <p>Every tangible is a commemorative emblem <b>for</b> its record — never a functional replica of the invention described. Spec drafts are marked draft — not filed, not granted. Patent records are public records with their publication identifiers shown.</p>
-<p>Site 15 of 25 · <b>THE JAH NETWORK</b> · tangible wing · sister site: <a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">The Signature Cyber Mega-Mall</a> (the software mall)</p>
+<p id="footsite">Site 15 of 25 · <b>THE JAH NETWORK</b> · tangible wing · sister site: <a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">The Signature Cyber Mega-Mall</a> (the software mall)</p>
 </footer>
 
 <div id="aubar"><span id="aulabel">Reading…</span><button id="aupause" onclick="auPauseToggle()">❚❚ Pause</button><button onclick="auStop()">■ Stop</button></div>
@@ -257,6 +257,25 @@ const HOME="https://justinahiggins614-cmyk.github.io/signature-3d-print/";
 const SPEC_SEARCH="https://justinahiggins614-cmyk.github.io/signature-one-archive/data/index/specs.search.json.gz";
 const PAT_SEARCH="https://justinahiggins614-cmyk.github.io/cyber-patent-catalog/data/patents.search.json.gz";
 function mHead(title,desc,canon){if(title)document.title=title;const md=document.querySelector('meta[name="description"]');if(md&&desc)md.setAttribute("content",desc);const cl=document.querySelector('link[rel="canonical"]');if(cl&&canon)cl.setAttribute("href",canon)}
+/* FIX-WAVE: fetch with timeout — never hang forever on a dead network */
+async function fetchJSON(url,timeoutMs){
+  const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),timeoutMs||15000);
+  try{const r=await fetch(url,{signal:ctl.signal,cache:"no-store"});
+    if(!r.ok)throw new Error("HTTP "+r.status);return await r.json();}
+  finally{clearTimeout(t);}
+}
+/* FIX-WAVE: "Site 15 of N" renders from the network manifest; static text stays as fallback */
+function netSite(){
+  fetchJSON("JAH-NETWORK-MANIFEST.json",8000).then(m=>{
+    if(m&&m.site_count){
+      const sn=m.site_number||15,sc=m.site_count;
+      const t="Site "+sn+" of "+sc+" · The Jah Network";
+      document.querySelectorAll(".kicker2").forEach(e=>{e.textContent=t});
+      const f=document.getElementById("footsite");
+      if(f)f.innerHTML="Site "+sn+" of "+sc+' · <b>THE JAH NETWORK</b> · tangible wing · sister site: <a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">The Signature Cyber Mega-Mall</a> (the software mall)';
+    }
+  }).catch(()=>{});
+}
 /* FIX-01: per-item JSON-LD Product schema for the open tangible — no license field, no commerce data */
 function setItemLD(r){
   var old=document.getElementById("itemld");if(old&&old.parentNode)old.parentNode.removeChild(old);
@@ -281,6 +300,9 @@ const DB={
   counts:{specs:0,patents:0},
   async load(){
     if(this.rows.length)return this.rows;
+    /* reset so a retry after a partial failure never serves half an index */
+    this.rows=[];this.specById={};this.patById={};this.patByPub={};this.cats=[];
+    this.counts={specs:0,patents:0};
     /* specs.search.json.gz is JSONL — one JSON row per line. Never JSON.parse the whole file. */
     this.specs=[];
     try{
@@ -427,9 +449,12 @@ var JIT={
 const Finder={
   STOP:new Set("the,a,an,and,or,for,to,of,in,on,with,is,it,this,that,me,my,i,you,your,we,our,do,does,want,need,needs,looking,look,find,finds,get,something,anything,some,any,please,like,just,really,very,would,could,should,can,will,have,has,are,be,was,were,at,by,from,as,so,but,if,not,no,yes,up,out,about,into,over,after,than,then,there,their,them,they,he,she,his,her,its,more,most,other,same,such,only,own,too,when,where,which,who,whom,why,how,all,both,each,few,show,tell,give,kind,thing,things,stuff,maybe,perhaps,print,printed,printer,tangible,medallion".split(",")),
   keywords(t){return String(t||"").toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>=3&&!this.STOP.has(w))},
-  score(r,kws){const t=(r.title+" "+r.id+" "+(r.cat||"")).toLowerCase();let s=0;
-    for(const k of kws){if(r.id.toLowerCase()===k)s+=10;else if(r.id.toLowerCase().includes(k))s+=6;
-      if(t.includes(k))s+=k.length>5?3:2;}return s},
+  score(r,kws){const t=(r.title+" "+r.id+" "+(r.cat||"")).toLowerCase();
+    const idl=r.id.toLowerCase(),tl=(r.title||"").toLowerCase(),cl=(r.cat||"").toLowerCase();
+    let s=0;const fm=new Set();
+    for(const k of kws){if(idl===k){s+=10;fm.add("ID");}else if(idl.includes(k)){s+=6;fm.add("ID");}
+      if(t.includes(k)){s+=k.length>5?3:2;if(tl.includes(k))fm.add("TITLE");else if(cl.includes(k))fm.add("CATEGORY");else fm.add("ID");}}
+    return {s:s,fields:[...fm]}},
   say(html,who){const log=document.getElementById("flog");const d=document.createElement("div");d.className="fmsg "+who;d.innerHTML=html;log.appendChild(d);log.scrollTop=log.scrollHeight},
   greet(){this.say(jnAICardHTML(JIT_PROFILE_FINDER),"host");
     this.say(JIT.html((window.JAHtalk?JAHtalk.greet(JIT_PROFILE_FINDER):"Hi! I'm the <b>tangible finder</b> 🏭 — describe what you'd like to hold in plain words and I'll walk you to the right medallion. Every spec and patent record has one.")),"host");
@@ -446,33 +471,97 @@ const Finder={
     if(!kws.length){this.say(JIT.out(JIT_PROFILE_FINDER,"Give me one more word to go on — a thing, a field, a material… 🏭"),"host");return}
     const rows=await DB.load();
     if(!rows.length){this.say(JIT.out(JIT_PROFILE_FINDER,"The vault index is offline right now — try again in a moment. 🏭"),"host");return}
-    const hits=rows.map(r=>({r,s:this.score(r,kws)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,5);
-    if(!hits.length){this.say(JIT.out(JIT_PROFILE_FINDER,`Nothing in the vault matches <b>${esc(kws.join(" "))}</b> yet — try different words, or browse the shelves below. 🏭`),"host");return}
-    const cards=hits.map(h=>`<div class="fcard"><div class="fnm"><b>${esc(h.r.title)}</b><br><span style="color:var(--dim)">${esc(h.r.id)} · ${h.r.kind==="spec"?"SPEC":"PATENT"} · ${esc(h.r.cat)}</span></div><a class="btn" style="padding:6px 14px;font-size:.85em" href="?print=${encodeURIComponent(h.r.id)}">Take me there →</a></div>`).join("");
+    const hits=rows.map(r=>{const sc=this.score(r,kws);return {r:r,s:sc.s,f:sc.fields};}).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,5);
+    if(!hits.length){this.say(JIT.out(JIT_PROFILE_FINDER,`NO MATCHING TANGIBLE FOUND for <b>${esc(kws.join(" "))}</b> — try different words, or browse the shelves below. 🏭`),"host");return}
+    const cards=hits.map(h=>`<div class="fcard"><div class="fnm"><b>${esc(h.r.title)}</b><br><span style="color:var(--dim)">${esc(h.r.id)} · ${h.r.kind==="spec"?"SPEC":"PATENT"} · ${esc(h.r.cat)}</span><br><span style="color:var(--cy);font-size:.78em">MATCHED: ${esc(h.f.join(" + ")||"—")}</span></div><a class="btn" style="padding:6px 14px;font-size:.85em" href="?print=${encodeURIComponent(h.r.id)}">Take me there →</a></div>`).join("");
     this.say(JIT.out(JIT_PROFILE_FINDER,`Found <b>${hits.length}</b> tangibles — top pick first: 🏭${cards}`),"host");
   }
 };
 
 /* ================= app: browse + item ================= */
 const App={
-  src:"all",cat:"",q:"",letter:"",shown:0,page:60,
+  src:"all",cat:"",q:"",letter:"",shown:0,page:60,loadTries:0,
   async boot(){
-    Finder.greet();this.renderAZ();this.bindQ();
-    const pid=new URLSearchParams(location.search).get("print");
-    this.updateCounts();
-    DB.load().then(()=>{this.fillCats();this.updateCounts();
-      if(pid){const r=DB.resolve(pid);if(r)this.openItem(r);else this.showGrid();}
-      else this.showGrid();});
-    if(!pid)this.showGridSoon();
+    Finder.greet();this.renderAZ();this.bindQ();netSite();
+    const qs=new URLSearchParams(location.search);
+    const pid=qs.get("print"),fmt=(qs.get("format")||"").toLowerCase();
+    this.fastCounts();
+    if(pid&&fmt==="json"){this.rawJSON(pid);return;}
+    this.loadIndex(pid);
   },
-  showGridSoon(){},
-  updateCounts(){
-    const c=DB.counts,total=c.specs+c.patents;
-    document.getElementById("livecounts").innerHTML=
-      `<span class="chip">Tangibles in vault: <b>${total.toLocaleString()}</b> / 1,000,000</span>`+
+  /* FIX-WAVE P0-2: counts render INSTANTLY from the tiny data/counts.json —
+     no more "counting tangibles…" while the 25MB search index downloads. */
+  countsChips(c,note){
+    const el=document.getElementById("livecounts");if(!el)return;
+    el.innerHTML=
+      `<span class="chip">Tangibles in vault: <b>${(c.specs+c.patents).toLocaleString()}</b> / 1,000,000</span>`+
       `<span class="chip">Spec tangibles: <b>${c.specs.toLocaleString()}</b></span>`+
       `<span class="chip">Patent tangibles: <b>${c.patents.toLocaleString()}</b></span>`+
-      `<span class="chip">Print files: <b>STL · OBJ · 3MF — free</b></span>`;
+      `<span class="chip">Print files: <b>STL · OBJ · 3MF — free</b></span>`+
+      (note?`<span class="chip" style="border-style:dashed">${esc(note)}</span>`:"");
+  },
+  dynTexts(total){
+    const q=document.getElementById("q");
+    if(q)q.setAttribute("placeholder","Search "+Math.floor(total/1000).toLocaleString()+",000+ tangibles — title, ID, category…");
+    document.querySelectorAll(".dyntotal").forEach(e=>{e.textContent=total.toLocaleString()});
+  },
+  cacheCounts(c,updated){try{localStorage.setItem("sig3dp-counts",JSON.stringify({c:c,updated:updated||"",at:Date.now()}))}catch(e){}},
+  readCache(){try{const o=JSON.parse(localStorage.getItem("sig3dp-counts")||"null");return (o&&o.c)?o:null}catch(e){return null}},
+  async fastCounts(){
+    try{
+      const j=await fetchJSON("data/counts.json",8000);
+      const c={specs:j.specs||0,patents:j.patents||0};
+      if(!(c.specs+c.patents))throw new Error("empty counts");
+      this.countsChips(c,"updated "+(j.updated||""));
+      this.cacheCounts(c,j.updated||"");this.dynTexts(c.specs+c.patents);
+    }catch(e){
+      const cached=this.readCache();
+      if(cached){this.countsChips(cached.c,"LAST VERIFIED "+(cached.updated||"unknown"));
+        this.dynTexts(cached.c.specs+cached.c.patents);}
+    }
+  },
+  updateCounts(){
+    /* re-render from the live parsed index once it arrives (never hard-coded) */
+    const c=DB.counts,total=c.specs+c.patents;
+    if(!total)return;
+    this.countsChips(c,"live index");
+    this.cacheCounts(c,"live");this.dynTexts(total);
+  },
+  /* FIX-WAVE P0-2/P0-10: index load with timeout, one auto-retry, then an
+     explicit error state with RETRY + a static-archive fallback. Never indefinite. */
+  loadIndex(pid){
+    const self=this;
+    const fail=(msg)=>{
+      const g=document.getElementById("grid");if(!g)return;
+      g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--dim)">`+
+        `<p><b style="color:var(--am)">The tangible index could not be loaded.</b></p>`+
+        `<p style="font-size:.85em">${esc(msg)} The counts above are the last verified numbers.</p>`+
+        `<p><button class="btn" onclick="App.loadTries=0;App.loadIndex(${pid?JSON.stringify(pid):"null"})">↻ RETRY</button> `+
+        `<a class="btn ghost" href="browse/">OPEN STATIC ARCHIVE</a></p></div>`;
+      const mb=document.getElementById("morebtn");if(mb)mb.style.display="none";
+      const mc=document.getElementById("matchcount");if(mc)mc.textContent="";
+    };
+    const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error("index load timed out after 90s")),90000));
+    Promise.race([DB.load(),timeout]).then(()=>{
+      self.fillCats();self.updateCounts();
+      if(pid){const r=DB.resolve(pid);if(r)self.openItem(r);else self.showGrid();}
+      else self.showGrid();
+    }).catch((e)=>{
+      self.loadTries++;
+      if(self.loadTries<2){setTimeout(()=>self.loadIndex(pid),1500);return;}
+      fail(e&&e.message?e.message:"network error");
+    });
+  },
+  /* FIX-WAVE P1: ?print=<id>&format=json — raw machine-readable tangible record */
+  rawJSON(pid){
+    document.title="Tangible JSON — "+pid;
+    document.body.innerHTML='<p style="padding:20px;color:#9b958a">Loading tangible record…</p>';
+    const done=(obj)=>{document.body.innerHTML="<pre style='padding:20px;white-space:pre-wrap;word-break:break-word'>"+esc(JSON.stringify(obj,null,1))+"</pre>";};
+    const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),90000));
+    Promise.race([DB.load(),timeout]).then(()=>{
+      const r=DB.resolve(pid);
+      done(r?Item.recordJSON(r):{error:"TANGIBLE_NOT_FOUND",id:String(pid)});
+    }).catch(()=>done({error:"INDEX_UNAVAILABLE",id:String(pid)}));
   },
   fillCats(){const s=document.getElementById("catchip");
     s.innerHTML='<option value="">All categories</option>'+DB.cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");},
@@ -495,7 +584,7 @@ const App={
       (!q||r.title.toLowerCase().includes(q)||r.id.toLowerCase().includes(q)||(r.cat||"").toLowerCase().includes(q)));
   },
   search(reset){this.grid=this.filtered();this.shown=0;this.render(true)},
-  showGrid(){if(!DB.rows.length){setTimeout(()=>this.showGrid(),400);return}this.search(true)},
+  showGrid(){this.search(true)},
   render(reset){
     const g=document.getElementById("grid");
     if(reset){g.innerHTML="";this.shown=0}
@@ -524,7 +613,7 @@ const App={
 const JN_ENGINE_LINE="<b>Engine:</b> Signature Llama (live where available) with the built-in JAHtalk on-device fallback — it always answers.";
 function jnPanelHTML(id,ver){return `<div class="recpanel" role="group" aria-label="Record actions"><span class="rpid">ID: ${esc(id)}</span><span class="rpver">VERSION ${esc(ver||"v1.0")}</span>`+
  `<button data-rp="open">OPEN</button><button data-rp="src">SOURCE</button><button data-rp="share">SHARE</button>`+
- `<button data-rp="copy">COPY</button><button data-rp="dl">DOWNLOAD</button><button data-rp="read">READ ALOUD</button></div>`}
+ `<button data-rp="copy">COPY</button><button data-rp="dl">DOWNLOAD</button><button data-rp="read">READ ALOUD</button><button data-rp="report">⚠ REPORT</button></div>`}
 function jnAICardHTML(prof){
   const duties=(prof.abilities||[]).map(x=>esc(x)).join("; ");
   return `<div class="jaicard"><b>🤖 AI IDENTITY</b><br><b>Name:</b> ${esc(prof.name||"AI assistant")} — ${esc(prof.description||"")}`+
@@ -553,8 +642,20 @@ function jnWireItemPanel(){
       else if(a==="src")window.open(srcUrl,"_blank","noopener");
       else if(a==="share")jnShareLink(deep);
       else if(a==="copy")Print3D.copySettings();
-      else if(a==="dl")jnDownloadJSON(r.id+".tangible.json",{record:r.id,title:r.title,kind:r.kind,category:r.cat||"",variant:Item.variant,files:["STL","OBJ","3MF"],version:"v1.0"});
+      else if(a==="dl")jnDownloadJSON(r.id+".tangible.json",Item.recordJSON(r));
       else if(a==="read")Aud.readItem();
+      else if(a==="report"){
+        const txt="TANGIBLE RECORD ISSUE REPORT\nTangible: "+r.id+"\nTitle: "+r.title+
+          "\nKind: "+(isSpec?"SPEC (DRAFT)":"PATENT (PUBLIC RECORD)")+
+          "\nURL: "+deep+"\nVariant: "+Item.variant+
+          "\nDate: "+new Date().toISOString()+
+          "\nIssue (describe the problem): ";
+        try{localStorage.setItem("sig3dp-report-"+Date.now(),txt)}catch(e){}
+        if(navigator.clipboard&&navigator.clipboard.writeText)
+          navigator.clipboard.writeText(txt).then(()=>alert("Report template copied — describe the issue at the end, then send it to the archive team."),
+            ()=>prompt("Copy this report:",txt));
+        else prompt("Copy this report:",txt);
+      }
     };
   });
 }
@@ -657,7 +758,67 @@ const Item={
       '<dt>Print size</dt><dd>1:1 — same as the dimensions above</dd>'+
       '<dt>Est. material</dt><dd>~'+cm3.toFixed(1)+' cm³ — about '+pla.toFixed(0)+' g PLA at typical settings (estimate; varies with infill)</dd>'+
       '<dt>Orientation</dt><dd>flat, base down</dd>'+
-      '<dt>Supports</dt><dd><b>none required</b> — flat base, no overhangs beyond the rim</dd></dl>';
+      '<dt>Supports</dt><dd><b>none required</b> — flat base, no overhangs beyond the rim</dd></dl>'+
+      '<div id="dlinteg"><p class="prov">Computing file hashes…</p></div>';
+    this.renderIntegrity();
+  },
+  /* FIX-WAVE P0-7: per-format download integrity — FORMAT · SIZE · SHA-256 ·
+     GENERATED · VERSION on every download, computed from the exact bytes the
+     download buttons produce (generated in this browser, just now). */
+  async renderIntegrity(){
+    var box=document.getElementById("dlinteg");if(!box||!this.rec)return;
+    try{
+      var kc=this.variant==="keychain";
+      var m=this._mesh||medallion(this.rec.id,kc);
+      var nm="tangible-"+this.rec.id;
+      var files=[["STL",stlAscii(m,nm)],["OBJ",objText(m,nm)],["3MF",threeMF(m,nm)]];
+      var enc=new TextEncoder(),rows=[];
+      for(var i=0;i<files.length;i++){
+        var fmt=files[i][0],data=files[i][1];
+        var bytes=(data instanceof Uint8Array)?data:enc.encode(data);
+        var hex="";
+        if(window.crypto&&crypto.subtle){
+          var d=await crypto.subtle.digest("SHA-256",bytes);
+          hex=Array.from(new Uint8Array(d)).map(function(b){return b.toString(16).padStart(2,"0")}).join("");
+        }
+        rows.push('<dt>'+fmt+'</dt><dd>'+bytes.length.toLocaleString()+' bytes'+
+          (hex?' · SHA-256 <code style="font-size:.78em">'+esc(hex.slice(0,20))+'…</code> <button class="btn ghost" style="padding:2px 10px;font-size:.75em" data-fullhash="'+hex+'">COPY HASH</button>':" · hash unavailable in this browser")+'</dd>');
+      }
+      box.innerHTML='<h4 style="color:var(--cy);letter-spacing:.08em">📦 FILE INTEGRITY</h4><dl class="kv">'+rows.join("")+
+        '</dl><p class="prov">Generated in your browser just now · GEOMETRY v1.0 · the same ID + variant always yields the same file. Sizes/hashes are of the exact bytes your download buttons produce.</p>';
+      box.querySelectorAll("[data-fullhash]").forEach(function(b){
+        b.onclick=function(){if(navigator.clipboard)navigator.clipboard.writeText(b.getAttribute("data-fullhash"));};
+      });
+    }catch(e){box.innerHTML='<p class="prov">File integrity info unavailable in this browser.</p>';}
+  },
+  /* FIX-WAVE P1: canonical machine-readable tangible record (JAH-TANGIBLE-RECORD/1.0) */
+  recordJSON(r){
+    const isSpec=r.kind==="spec";
+    const deep=HOME+"?print="+encodeURIComponent(r.id);
+    const rec={
+      source_id:r.id,record_id:r.id,
+      source_type:isSpec?"SPEC":"PATENT",
+      source_status:isSpec?"DRAFT":"PUBLIC_RECORD",
+      source_title:r.title,category:r.cat||"General",
+      object_purpose:"COMMEMORATIVE_RECORD_EMBLEM",functional_replica:false,
+      honesty:"Commemorative emblem FOR the record — not a functional replica of the invention described.",
+      geometry_version:"1.0",
+      dimensions_mm:{diameter:50,height:7.4,keychain_height:14.5},
+      keychain_available:true,
+      formats:["stl","obj","3mf"],files_stored:false,
+      gcode:"No universal G-code is shipped; slice the STL in your own slicer.",
+      provenance:{
+        tangible_url:deep,
+        source_url:isSpec?"https://justinahiggins614-cmyk.github.io/signature-one-archive/specs.html?spec="+encodeURIComponent(r.id)
+                        :"https://justinahiggins614-cmyk.github.io/cyber-patent-catalog/?patent="+encodeURIComponent(r.pub||r.id),
+        source_catalog:isSpec?"Signature Spec Catalog":"Globally Rejustered Patent Catalog"},
+      canonical_url:deep,version:"v1.0",creation_mode:"GENERATED",status:"INDEXED"
+    };
+    if(!isSpec&&r.pub&&r.pub!==r.id)rec.patent_publication=r.pub;
+    if(r.inventor)rec.inventor=r.inventor;
+    if(r.assignee)rec.assignee=r.assignee;
+    if(r.date)rec.pub_date=r.date;
+    return rec;
   },
   setVariant(v){this.variant=v;
     document.getElementById("vmed").classList.toggle("on",v==="medallion");

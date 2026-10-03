@@ -112,6 +112,7 @@ def main():
 <body><h1>Tangibles — shard {p+1} of {npages}</h1>
 <p>{prev_l} · <a href="{BASE}">depository home</a> · {next_l}</p>
 <p>Every tangible on this page is a <b>50 mm x ~7 mm commemorative medallion</b> — free STL, OBJ and 3MF print files are generated in your browser from the item's page. Files are not stored here; each link below opens its item's page with downloads.</p>
+<p><b>COMMERCIAL/TECHNICAL NOTE: THIS IS A COMMEMORATIVE MEDALLION, NOT THE INVENTION.</b> Each file is a keepsake emblem for its record — not a functional replica of the invention described.</p>
 <ol start="{p*PERB+1}">{lis}</ol>
 <p>{prev_l} · <a href="{BASE}">depository home</a> · {next_l}</p></body></html>\n""")
     # browse index

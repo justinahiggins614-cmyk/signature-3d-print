@@ -1104,7 +1104,7 @@ const PrintGuide={
     ov.appendChild(box);document.body.appendChild(ov);
     ov.addEventListener("click",e=>{if(e.target===ov)self.dismiss()});
     document.getElementById("printguide-ok").addEventListener("click",()=>self.dismiss());
-    try{document.getElementById("printguide-ok").focus()}catch(e){}
+    try{document.getElementById("printguide-ok").focus({preventScroll:true})}catch(e){}
   },
   close(){const e=document.getElementById("printguide-ov");if(e&&e.parentNode)e.parentNode.removeChild(e)},
   dismiss(){this.close();try{localStorage.setItem(this.KEY,"1")}catch(e){}},

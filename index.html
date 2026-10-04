@@ -255,6 +255,35 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <script src="assets/mesh3d.js"></script>
 <script src="js/jah-talk-fallback.js"></script>
 <script>
+/* ==== JAH global read-aloud controller (one per page): no stacked voices, no orphan audio ==== */
+(function(){
+if(window.__JAHREAD)return;
+var R={audios:[],lastTap:0,lastLabel:""};
+R.stopAll=function(){
+ try{if(window.speechSynthesis)window.speechSynthesis.cancel();}catch(e){}
+ try{if(window.responsiveVoice&&window.responsiveVoice.cancel)window.responsiveVoice.cancel();}catch(e){}
+ var i,a;
+ for(i=0;i<R.audios.length;i++){a=R.audios[i];try{a.pause();}catch(e){}try{a.removeAttribute("src");}catch(e){}try{a.load();}catch(e){}}
+ R.audios.length=0;
+ var els=document.querySelectorAll("audio");
+ for(i=0;i<els.length;i++){try{els[i].pause();}catch(e){}}
+};
+R.reg=function(a){if(a&&R.audios.indexOf(a)<0)R.audios.push(a);return a;};
+R.playGuard=function(label){
+ var now=Date.now();
+ if(now-R.lastTap<450&&label===R.lastLabel){R.lastTap=0;R.lastLabel="";R.stopAll();return false;}
+ R.lastTap=now;R.lastLabel=String(label||"");
+ R.stopAll();return true;
+};
+try{
+ var NativeAudio=window.Audio;
+ window.Audio=function(src){var a=src===undefined?new NativeAudio():new NativeAudio(src);R.reg(a);return a;};
+ window.Audio.prototype=NativeAudio.prototype;
+}catch(e){}
+window.__JAHREAD=R;
+})();
+</script>
+<script>
 "use strict";
 /* ================= helpers ================= */
 async function gz(url){const r=await fetch(url);if(!r.ok)throw new Error("HTTP "+r.status);return await new Response(r.body.pipeThrough(new DecompressionStream("gzip"))).text()}
@@ -987,16 +1016,16 @@ function fxPlay(list,i,tier,retry,proven){if(!FX.active||!AU.active)return;if(i>
     fxPlay(list,i+1,tier,0,true)};
   try{var pr=a.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
 function fxStart(text){FX.active=true;FX.errs=0;fxPlay(fxChunks(text),0,0,0,false)}
-function fxStop(){FX.active=false;if(FX.audio){try{FX.audio.pause()}catch(e){}FX.audio=null}}
+function fxStop(){try{if(window.__JAHREAD)window.__JAHREAD.stopAll();}catch(e){}FX.active=false;if(FX.audio){try{FX.audio.pause()}catch(e){}FX.audio=null}}
 function auPauseToggle(){if(!AU.active)return;
   if(FX.active){var fa=FX.audio;try{if(AU.paused){if(fa)fa.play()}else{if(fa)fa.pause()}}catch(e){}AU.paused=!AU.paused;auPaintBtn();return}
   try{if(AU.paused)window.speechSynthesis.resume();else window.speechSynthesis.pause()}catch(e){}
   AU.paused=!AU.paused;auPaintBtn()}
-function auStop(){AU.active=false;AU.paused=false;AU.q=[];AU.i=0;fxStop();
+function auStop(){try{if(window.__JAHREAD)window.__JAHREAD.stopAll();}catch(e){}AU.active=false;AU.paused=false;AU.q=[];AU.i=0;fxStop();
   try{if(window.speechSynthesis)window.speechSynthesis.cancel()}catch(e){}auShowBar(false)}
 const Aud={
   clean(t){return String(t||"").replace(/[`{}|\\]/g,"").replace(/[ \t\u00a0]+/g," ").trim()},
-  read(text,label){auStop();text=this.clean(text);if(!text){audMsg("Nothing to read here yet.");return}
+  read(text,label){if(window.__JAHREAD&&!window.__JAHREAD.playGuard("read"))return;auStop();text=this.clean(text);if(!text){audMsg("Nothing to read here yet.");return}
     AU.label=label||"";AU.q=auChunks(AU.label+". "+text);AU.i=0;AU.active=true;AU.paused=false;
     if(hasSpeech()){try{window.speechSynthesis.cancel()}catch(e){}auSpeakNext()}
     else{auShowBar(true);auPaintBtn();fxStart(AU.label+". "+text);audMsg("This browser has no built-in voice — reading with the online voice instead.")}},

@@ -1,8 +1,8 @@
 {
- "specs": 643512,
- "patents": 53651,
- "total": 697163,
+ "specs": 723840,
+ "patents": 60822,
+ "total": 784662,
  "goal": 1000000,
- "updated": "2026-10-03",
+ "updated": "2026-10-04",
  "manifest": "tangibles-manifest.json"
 }

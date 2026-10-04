@@ -11,6 +11,8 @@ Fails loudly (exit 1) when any invariant breaks:
   6. required machine-readable files exist: llms.txt, ai-manifest.json,
      signature-tangible-schema.json, docs/GEOMETRY_SPEC.md
   7. manifest index hashes match the actual search-index files on disk
+  8. az buckets for browse.html: bucket counts sum == total; every listed
+     bucket file exists on disk
 """
 import gzip, json, math, os, re, sys, hashlib, xml.etree.ElementTree as ET
 
@@ -152,6 +154,20 @@ def main():
             if h != src["sha256"]:
                 fail(f"manifest hash stale for {src['file']}")
     print("  manifest index hashes match disk")
+
+    # 8. az buckets for browse.html: bucket counts sum == total, files exist
+    try:
+        azidx = json.load(open(os.path.join(REPO, "data/az/az-index.json")))
+        azsum = sum(b["count"] for b in azidx["buckets"].values())
+        if azsum != total:
+            fail(f"az buckets sum {azsum} != total {total}")
+        else:
+            print(f"  az buckets: {len(azidx['buckets'])} files, {azsum} rows")
+        for letter, b in sorted(azidx["buckets"].items()):
+            if not os.path.exists(os.path.join(REPO, b["file"])):
+                fail(f"az bucket missing: {b['file']}")
+    except Exception as e:
+        fail(f"az-index.json unreadable: {e}")
 
     if issues:
         print(f"\n{len(issues)} GATE(S) FAILED")

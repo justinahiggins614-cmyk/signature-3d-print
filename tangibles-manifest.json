@@ -9,30 +9,30 @@
  "sister_site": "https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/",
  "sister_role": "tangible wing (this site) <-> software mall (sister)",
  "counts": {
-  "total": 697163,
-  "spec": 643512,
-  "patent": 53651,
+  "total": 784662,
+  "spec": 723840,
+  "patent": 60822,
   "goal": 1000000,
-  "reconciliation": "643512 + 53651 = 697163"
+  "reconciliation": "723840 + 60822 = 784662"
  },
- "count_updated": "2026-10-03",
- "generated_at": "2026-10-03T15:05:15Z",
- "catalog_version": "2026-10-03",
- "archive_version": "2026-10-03",
+ "count_updated": "2026-10-04",
+ "generated_at": "2026-10-04T05:03:58Z",
+ "catalog_version": "2026-10-04",
+ "archive_version": "2026-10-04",
  "index": {
-  "index_version": "search-index-2026-10-03",
+  "index_version": "search-index-2026-10-04",
   "sources": [
    {
     "kind": "spec",
     "file": "signature-one-archive/data/index/specs.search.json.gz",
-    "sha256": "b58d53ccb6dde16e00736e901bd71822c0819b0cb3da41c8c5970b50e24f77f7",
-    "rows_indexed": 643512
+    "sha256": "1c39d923b55c5c9370bdd93c517d2ad8c6c85e014a2b40298ab9761b6dc2428c",
+    "rows_indexed": 723840
    },
    {
     "kind": "patent",
     "file": "cyber-patent-catalog/data/patents.search.json.gz",
-    "sha256": "ed0162d8eed23ad2c36437e0a819bb03f778b88be535566d778383bbf0f391da",
-    "rows_indexed": 53651,
+    "sha256": "dc86a72db4d23bb36b67b5f6f9759e6d875ae493f82b08e3443f01414c4f7eed",
+    "rows_indexed": 60822,
     "dedupe_note": "Patent rows are deduped by record ID; any upstream duplicate IDs are reported, first record kept."
    }
   ]
@@ -74,6 +74,6 @@
  "ai_manifest": "ai-manifest.json",
  "llms": "llms.txt",
  "sitemap": "sitemap.xml (index of sitemap-pages.xml + tangible shards)",
- "browse": "browse/ (static shard pages, 2000 tangibles each)",
- "updated": "2026-10-03"
+ "browse": "browse/ (static shard pages, 2000 tangibles each) + browse.html (human A-Z archive; lazy per-letter buckets in data/az/, manifest data/az/az-index.json)",
+ "updated": "2026-10-04"
 }

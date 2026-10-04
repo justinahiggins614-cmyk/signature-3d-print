@@ -3,12 +3,17 @@
 
 Reads the spec + patent search indexes, then generates:
   sitemap-tangibles-N.xml  (per-range ?print= URL shards, 50k each)
-  sitemap.xml              (index)
+  sitemap.xml              (index; sitemap-pages.xml carries home + browse.html + browse/)
   robots.txt
   api.json
   data/counts.json
   browse/shard-XXXX.html   (static crawlable link shards, 2000/page, prev/next)
-Stamps the static count line into index.html (STATIC-COUNT marker).
+  data/az/az-*.json.gz     (A-Z lazy buckets for browse.html, one gz file per letter)
+  data/az/az-index.json    (bucket manifest: file + count per letter)
+Stamps the static count line into index.html AND browse.html.
+RULE: the A-Z buckets are flushed from the SAME items list as the
+sitemaps/shards, and the count stamps always run LAST, after every data
+file is flushed — browse.html can never be one run behind its data.
 """
 import json, gzip, os, html, datetime, hashlib, re
 
@@ -70,6 +75,7 @@ def main():
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
         f.write(f' <url><loc>{BASE}</loc><lastmod>{TODAY}</lastmod><changefreq>daily</changefreq></url>\n')
         f.write(f' <url><loc>{BASE}browse/</loc><lastmod>{TODAY}</lastmod><changefreq>daily</changefreq></url>\n')
+        f.write(f' <url><loc>{BASE}browse.html</loc><lastmod>{TODAY}</lastmod><changefreq>daily</changefreq></url>\n')
         for doc in ("llms.txt", "ai-manifest.json", "tangibles-manifest.json",
                     "signature-tangible-schema.json", "docs/GEOMETRY_SPEC.md"):
             f.write(f' <url><loc>{BASE}{doc}</loc><lastmod>{TODAY}</lastmod><changefreq>monthly</changefreq></url>\n')
@@ -173,7 +179,7 @@ def main():
         "ai_manifest": "ai-manifest.json",
         "llms": "llms.txt",
         "sitemap": "sitemap.xml (index of sitemap-pages.xml + tangible shards)",
-        "browse": "browse/ (static shard pages, 2000 tangibles each)",
+        "browse": "browse/ (static shard pages, 2000 tangibles each) + browse.html (human A-Z archive; lazy per-letter buckets in data/az/, manifest data/az/az-index.json)",
         "updated": TODAY,
     }
     with open(os.path.join(HERE, "tangibles-manifest.json"), "w") as f:
@@ -224,6 +230,30 @@ def main():
         f.write("</ul></body></html>\n")
     print(f"browse shards: {npages} pages")
 
+    # ---- A-Z archive buckets for browse.html (lazy-loaded, one gz per letter) ----
+    # Flushed from the SAME `items` list as the sitemaps/shards above, and the
+    # count stamps below run after this block — browse.html's count is stamped
+    # in the SAME run that writes its data, so it can never be one run behind.
+    azdir = os.path.join(HERE, "data", "az")
+    os.makedirs(azdir, exist_ok=True)
+    azb = {}
+    for (iid, title, k) in items:
+        t = (title or "").strip()
+        ch = t[0].upper() if t else "#"
+        b = ch if ("A" <= ch <= "Z") else "#"
+        azb.setdefault(b, []).append([iid, title, k])
+    azmap = {}
+    for b in sorted(azb):
+        rows = azb[b]
+        rows.sort(key=lambda r: (r[1] or "").lower())
+        fn = "az-9.json.gz" if b == "#" else f"az-{b}.json.gz"
+        with gzip.open(os.path.join(azdir, fn), "wt") as z:
+            z.write(json.dumps(rows, separators=(",", ":")))
+        azmap[b] = {"file": f"data/az/{fn}", "count": len(rows)}
+    with open(os.path.join(azdir, "az-index.json"), "w") as f:
+        json.dump({"buckets": azmap, "total": n, "updated": TODAY}, f, indent=1)
+    print(f"az buckets: {len(azmap)} files, {sum(len(v) for v in azb.values())} rows")
+
     # ---- stamp static count into index.html (regex: the marker was consumed by an old build) ----
     idx = os.path.join(HERE, "index.html")
     s = open(idx).read()
@@ -245,6 +275,26 @@ def main():
         print("stamped static count (legacy marker)")
     else:
         print("NOTE: no staticcount paragraph found (idempotent skip)")
+
+    # ---- stamp browse.html too (SAME run, AFTER the data flush above — never one run behind) ----
+    brw = os.path.join(HERE, "browse.html")
+    if os.path.exists(brw):
+        bb = open(brw).read()
+        bstamp = (f"{n:,} printable tangibles in the A–Z archive ({specs:,} spec · {pats:,} patent), as of {TODAY}. "
+                  f"Open a letter shelf below — marching to 1,000,000.")
+        b2, bcnt = re.subn(r'<p class="staticcount" id="azstaticcount">.*?</p>',
+                           f'<p class="staticcount" id="azstaticcount">{esc(bstamp)}</p>',
+                           bb, count=1, flags=re.S)
+        bchip = (f'<span class="chip" id="azchipcount">{n:,} printable tangibles in the vault '
+                 f'({specs:,} spec · {pats:,} patent), as of {TODAY} — marching to 1,000,000</span>')
+        b2, bcnt2 = re.subn(r'<span class="chip" id="azchipcount">.*?</span>', bchip, b2, count=1, flags=re.S)
+        if bcnt:
+            open(brw, "w").write(b2)
+            print("stamped browse.html" + ("; stamped azchipcount" if bcnt2 else "; NOTE: no azchipcount chip found"))
+        else:
+            print("NOTE: browse.html has no azstaticcount paragraph (skipped)")
+    else:
+        print("NOTE: browse.html not present (skipped)")
 
 if __name__ == "__main__":
     main()

@@ -7,9 +7,9 @@
  "sister_role": "tangible wing (this site) <-> software mall (sister)",
  "honesty": "Each tangible is a commemorative emblem FOR its record \u2014 not a functional replica of the invention described.",
  "tangibles": {
-  "total": 697163,
-  "spec": 643512,
-  "patent": 53651,
+  "total": 784662,
+  "spec": 723840,
+  "patent": 60822,
   "goal": 1000000
  },
  "formats": [
@@ -19,5 +19,5 @@
  ],
  "gcode": "No universal G-code is shipped; slice the STL in your own slicer.",
  "deep_link": "https://justinahiggins614-cmyk.github.io/signature-3d-print/?print=<JAH-SPEC-######|JAH-PAT-######|pub-number>",
- "updated": "2026-10-03"
+ "updated": "2026-10-04"
 }

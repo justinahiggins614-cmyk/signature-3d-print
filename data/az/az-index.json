@@ -1,0 +1,114 @@
+{
+ "buckets": {
+  "#": {
+   "file": "data/az/az-9.json.gz",
+   "count": 4050
+  },
+  "A": {
+   "file": "data/az/az-A.json.gz",
+   "count": 64439
+  },
+  "B": {
+   "file": "data/az/az-B.json.gz",
+   "count": 22374
+  },
+  "C": {
+   "file": "data/az/az-C.json.gz",
+   "count": 65251
+  },
+  "D": {
+   "file": "data/az/az-D.json.gz",
+   "count": 32757
+  },
+  "E": {
+   "file": "data/az/az-E.json.gz",
+   "count": 28193
+  },
+  "F": {
+   "file": "data/az/az-F.json.gz",
+   "count": 44480
+  },
+  "G": {
+   "file": "data/az/az-G.json.gz",
+   "count": 18553
+  },
+  "H": {
+   "file": "data/az/az-H.json.gz",
+   "count": 15624
+  },
+  "I": {
+   "file": "data/az/az-I.json.gz",
+   "count": 16228
+  },
+  "J": {
+   "file": "data/az/az-J.json.gz",
+   "count": 6780
+  },
+  "K": {
+   "file": "data/az/az-K.json.gz",
+   "count": 2985
+  },
+  "L": {
+   "file": "data/az/az-L.json.gz",
+   "count": 26794
+  },
+  "M": {
+   "file": "data/az/az-M.json.gz",
+   "count": 54799
+  },
+  "N": {
+   "file": "data/az/az-N.json.gz",
+   "count": 13254
+  },
+  "O": {
+   "file": "data/az/az-O.json.gz",
+   "count": 13818
+  },
+  "P": {
+   "file": "data/az/az-P.json.gz",
+   "count": 102923
+  },
+  "Q": {
+   "file": "data/az/az-Q.json.gz",
+   "count": 6546
+  },
+  "R": {
+   "file": "data/az/az-R.json.gz",
+   "count": 27084
+  },
+  "S": {
+   "file": "data/az/az-S.json.gz",
+   "count": 138345
+  },
+  "T": {
+   "file": "data/az/az-T.json.gz",
+   "count": 35253
+  },
+  "U": {
+   "file": "data/az/az-U.json.gz",
+   "count": 10237
+  },
+  "V": {
+   "file": "data/az/az-V.json.gz",
+   "count": 14589
+  },
+  "W": {
+   "file": "data/az/az-W.json.gz",
+   "count": 18199
+  },
+  "X": {
+   "file": "data/az/az-X.json.gz",
+   "count": 30
+  },
+  "Y": {
+   "file": "data/az/az-Y.json.gz",
+   "count": 327
+  },
+  "Z": {
+   "file": "data/az/az-Z.json.gz",
+   "count": 750
+  }
+ },
+ "total": 784662,
+ "updated": "2026-10-04"
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build gates for the Signature 3D Print Depository.
+"""Build gates for the Signature 3D Print Mega Mall.
 
 Fails loudly (exit 1) when any invariant breaks:
   1. count reconciliation: spec + patent == total (counts.json, api.json, manifest)

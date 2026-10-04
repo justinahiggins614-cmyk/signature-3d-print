@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Signature 3D Print Depository static layer.
+"""Build the Signature 3D Print Mega Mall static layer.
 
 Reads the spec + patent search indexes, then generates:
   sitemap-tangibles-N.xml  (per-range ?print= URL shards, 50k each)
@@ -94,7 +94,7 @@ def main():
 
     # ---- api.json ----
     api = {
-        "site": "The Signature 3D Print Depository (provisional name)",
+        "site": "The Signature 3D Print Mega Mall (provisional name)",
         "url": BASE,
         "network": "THE JAH NETWORK",
         "site_number": 15,
@@ -121,7 +121,7 @@ def main():
     manifest = {
         "manifest": "tangibles-manifest",
         "manifest_version": "1.0",
-        "site": "The Signature 3D Print Depository (provisional name)",
+        "site": "The Signature 3D Print Mega Mall (provisional name)",
         "url": BASE,
         "network": "THE JAH NETWORK",
         "site_number": 15,
@@ -208,7 +208,7 @@ def main():
             for (iid, title, k) in chunk)
         with open(os.path.join(bdir, fn), "w") as f:
             f.write(f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
-<title>Tangibles shard {p+1} of {npages} — The Signature 3D Print Depository</title>
+<title>Tangibles shard {p+1} of {npages} — The Signature 3D Print Mega Mall</title>
 <meta name="description" content="Crawlable index of 3D-printable tangibles, page {p+1} of {npages}.">
 <link rel="canonical" href="{BASE}browse/{fn}"></head>
 <body><h1>Tangibles — shard {p+1} of {npages}</h1>
@@ -220,7 +220,7 @@ def main():
     # browse index
     with open(os.path.join(bdir, "index.html"), "w") as f:
         f.write(f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
-<title>Browse all tangibles — The Signature 3D Print Depository</title>
+<title>Browse all tangibles — The Signature 3D Print Mega Mall</title>
 <meta name="description" content="Crawlable shard index of every 3D-printable tangible.">
 <link rel="canonical" href="{BASE}browse/"></head>
 <body><h1>Browse all {n:,} tangibles</h1><p>{npages} shards, 2000 per page:</p><ul>

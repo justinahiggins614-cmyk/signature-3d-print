@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Functional harness for The Signature 3D Print Depository (site 27/27).
+/* Functional harness for The Signature 3D Print Mega Mall (site 27/27).
  * Drives the REAL shipped code:
  *   Part A: assets/mesh3d.js (mesh generation + STL/OBJ/3MF writers) in Node.
  *   Part B: the full index.html inline page script in a vm sandbox with a

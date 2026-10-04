@@ -231,9 +231,14 @@ def main():
              f"Free STL, OBJ and 3MF downloads — marching to 1,000,000.")
     newp = f'<p class="staticcount" id="staticcount">{esc(stamp)}</p>'
     s2, cnt = re.subn(r'<p class="staticcount"[^>]*>.*?</p>', newp, s, count=1, flags=re.S)
+    # ---- re-stamp the first-load chip (id="chipcount"): the raw HTML must carry the
+    # ---- real count so the page never boots on "counting tangibles…" (JS overwrites live) ----
+    chip = (f'<span class="chip" id="chipcount">{n:,} printable tangibles in the vault '
+            f'({specs:,} spec · {pats:,} patent), as of {TODAY} — marching to 1,000,000</span>')
     if cnt:
+        s2, cnt2 = re.subn(r'<span class="chip" id="chipcount">.*?</span>', chip, s2, count=1, flags=re.S)
         open(idx, "w").write(s2)
-        print("stamped static count")
+        print("stamped static count" + ("; stamped chipcount" if cnt2 else "; NOTE: no chipcount chip found"))
     elif "STATIC-COUNT" in s:
         s = s.replace("STATIC-COUNT", esc(stamp))
         open(idx, "w").write(s)

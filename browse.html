@@ -82,6 +82,11 @@ display:flex;justify-content:space-between;align-items:center;gap:10px;min-heigh
 .azload{padding:16px;color:var(--dim);font-size:.9em}
 footer{border-top:1px solid var(--line);margin-top:40px;padding:24px 16px;text-align:center;color:var(--dim);font-size:.85em}
 footer .prov{color:var(--am)}
+/* deterministic tangible covers (js/covers.js) — lazy product-shot thumbnails */
+.covthumb{display:inline-block;width:64px;flex:0 0 64px;border-radius:8px;overflow:hidden;background:#14181d;border:1px solid #2b313a;align-self:center}
+.covthumb svg{display:block;width:100%;height:auto}
+.covph{display:flex;align-items:center;justify-content:center;min-height:64px;color:#ff7a1a;font-size:1.3em}
+.azrow{align-items:center}
 </style>
 <style>html[data-theme="dark"]{filter:invert(1) hue-rotate(180deg)}html[data-theme="dark"] svg{filter:invert(1) hue-rotate(180deg)}</style>
 </head>
@@ -256,6 +261,7 @@ document.getElementById("jah-askai-q").addEventListener("keydown",function(e){if
 <p>Site 27 of 27 · <b>THE JAH NETWORK</b> · tangible wing · sister site: <a href="https://justinahiggins614-cmyk.github.io/signature-cyber-mega-mall/">The Signature Cyber Mega-Mall</a> (the software mall)</p>
 </footer>
 
+<script src="js/covers.js"></script>
 <script>
 "use strict";
 /* A–Z tangible archive: lazy per-letter buckets (data/az/az-<L>.json.gz).
@@ -313,7 +319,8 @@ function filteredRows(L){
 
 function rowHtml(r){
   const kind=r[2]==="spec"?"spec":"pat";
-  return `<a class="azrow" href="${HOME}?print=${encodeURIComponent(r[0])}"><span class="aid">${esc(r[0])}</span><span class="at">${esc(r[1]||"Untitled record")}</span><span class="ak ${kind}">${kind==="spec"?"SPEC":"PATENT"}</span></a>`;
+  const cov=(window.Covers3D?Covers3D.thumb({id:r[0],title:r[1]||"Untitled record",kind:kind}):"");
+  return `<a class="azrow" href="${HOME}?print=${encodeURIComponent(r[0])}">${cov}<span class="aid">${esc(r[0])}</span><span class="at">${esc(r[1]||"Untitled record")}</span><span class="ak ${kind}">${kind==="spec"?"SPEC":"PATENT"}</span></a>`;
 }
 
 function renderRows(L,d,rows){
@@ -325,6 +332,7 @@ function renderRows(L,d,rows){
   h+=`</div>`;
   if(n<fr.length)h+=`<button class="azmore">LOAD MORE ↓ — showing ${n.toLocaleString()} of ${fr.length.toLocaleString()}</button>`;
   body.innerHTML=h;
+  if(window.Covers3D)Covers3D.lazy(body);
   const m=body.querySelector(".azmore");
   if(m)m.onclick=()=>{AZ.shown[L]=(AZ.shown[L]||AZ.page)+AZ.page;renderRows(L,d,AZ.cache[L]);};
   const q=AZ.filter.trim();

@@ -149,6 +149,12 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 /* FIX-04: card grid — single-to-double column stacking on mobile + strict preview aspect ratios */
 .pvwrap{aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#0a0c0e}
 .pvwrap svg{width:100%;height:100%;display:block}
+/* deterministic product-shot covers (js/covers.js) */
+.covthumb{display:block;border-radius:8px;overflow:hidden;background:#14181d;border:1px solid #2b313a}
+.covthumb svg{display:block;width:100%;height:auto}
+.covph{display:flex;align-items:center;justify-content:center;min-height:88px;color:#ff7a1a;font-size:1.5em}
+.covwide{border-radius:12px;overflow:hidden;border:1px solid #2b313a;margin:0 0 14px}
+.covwide svg{display:block;width:100%;height:auto}
 @media(max-width:768px){.grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}}
 /* GEMINI-15: profile picker + starting-point banner + download spec/progress */
 .profpick{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
@@ -273,6 +279,7 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <div id="aubar"><span id="aulabel">Reading…</span><button id="aupause" onclick="auPauseToggle()">❚❚ Pause</button><button onclick="auStop()">■ Stop</button></div>
 <script src="assets/mesh3d.js"></script>
 <script src="js/jah-talk-fallback.js"></script>
+<script src="js/covers.js"></script>
 <script>
 /* ==== JAH global read-aloud controller (one per page): no stacked voices, no orphan audio ==== */
 (function(){
@@ -531,7 +538,7 @@ const Finder={
     if(!rows.length){this.say(JIT.out(JIT_PROFILE_FINDER,"The vault index is offline right now — try again in a moment. 🏭"),"host");return}
     const hits=rows.map(r=>{const sc=this.score(r,kws);return {r:r,s:sc.s,f:sc.fields};}).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,5);
     if(!hits.length){this.say(JIT.out(JIT_PROFILE_FINDER,`NO MATCHING TANGIBLE FOUND for <b>${esc(kws.join(" "))}</b> — try different words, or browse the shelves below. 🏭`),"host");return}
-    const cards=hits.map(h=>`<div class="fcard"><div class="fnm"><b>${esc(h.r.title)}</b><br><span style="color:var(--dim)">${esc(h.r.id)} · ${h.r.kind==="spec"?"SPEC":"PATENT"} · ${esc(h.r.cat)}</span><br><span style="color:var(--cy);font-size:.78em">MATCHED: ${esc(h.f.join(" + ")||"—")}</span></div><a class="btn" style="padding:6px 14px;font-size:.85em" href="?print=${encodeURIComponent(h.r.id)}">Take me there →</a></div>`).join("");
+    const cards=hits.map(h=>`<div class="fcard"><div style="display:flex;gap:10px;align-items:center">${window.Covers3D?'<span class="covthumb" style="width:84px;flex-basis:84px">'+Covers3D.svg({id:h.r.id,title:h.r.title,kind:h.r.kind})+"</span>":""}<div class="fnm"><b>${esc(h.r.title)}</b><br><span style="color:var(--dim)">${esc(h.r.id)} · ${h.r.kind==="spec"?"SPEC":"PATENT"} · ${esc(h.r.cat)}</span><br><span style="color:var(--cy);font-size:.78em">MATCHED: ${esc(h.f.join(" + ")||"—")}</span></div></div><a class="btn" style="padding:6px 14px;font-size:.85em;margin-top:8px;display:inline-block" href="?print=${encodeURIComponent(h.r.id)}">Take me there →</a></div>`).join("");
     this.say(JIT.out(JIT_PROFILE_FINDER,`Found <b>${hits.length}</b> tangibles — top pick first: 🏭${cards}`),"host");
   }
 };
@@ -648,9 +655,10 @@ const App={
     if(reset){g.innerHTML="";this.shown=0}
     const slice=(this.grid||[]).slice(this.shown,this.shown+this.page);
     g.insertAdjacentHTML("beforeend",slice.map(r=>
-      `<div class="card" onclick="location.href='?print=${encodeURIComponent(r.id)}'"><div class="pvwrap">${previewSVG(r.id,false)}</div>
+      `<div class="card" onclick="location.href='?print=${encodeURIComponent(r.id)}'">${window.Covers3D?Covers3D.thumb({id:r.id,title:r.title,kind:r.kind}):""}
       <div class="sku">${esc(r.id)}</div><h4>${esc(r.title.length>70?r.title.slice(0,70)+"…":r.title)}</h4>
       <div class="meta">${r.kind==="spec"?'<span class="stbadge draft">DRAFT SPECIFICATION</span>':'<span class="stbadge pub">PUBLIC RECORD</span>'} ${esc(r.cat)}</div></div>`).join(""));
+    if(window.Covers3D)Covers3D.lazy(g);
     this.shown+=slice.length;
     document.getElementById("morebtn").style.display=this.shown>=(this.grid||[]).length?"none":"";
     /* FIX-05: real-time match feedback */
@@ -760,6 +768,7 @@ const Item={
     document.getElementById("itemview").style.display="block";
     document.getElementById("itemview").innerHTML=`
     <div style="margin-bottom:10px"><a href="./" style="color:var(--dim)">← back to the vault</a></div>
+    ${window.Covers3D?'<div class="covwide" style="max-width:560px">'+Covers3D.svg({id:r.id,title:r.title,kind:r.kind,wide:true})+"</div>":""}
     <div class="iv">
       <div class="prev"><div id="pv" class="pvwrap">${previewSVG(r.id,true)}</div>
         <div class="variant">

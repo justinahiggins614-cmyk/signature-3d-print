@@ -227,26 +227,6 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 </div>
 </section>
 
-<section class="sec" id="browsesec">
-<h2>🗂 Browse the vault <span class="sub">Every tangible, by source — pick a shelf</span></h2>
-<div class="browsectrl">
-<div class="toolbar">
-<div class="tabs">
-<button class="tab on" data-s="all" onclick="App.setSrc('all')">ALL</button>
-<button class="tab" data-s="spec" onclick="App.setSrc('spec')">SPEC TANGIBLES</button>
-<button class="tab" data-s="pat" onclick="App.setSrc('pat')">PATENT TANGIBLES</button>
-</div>
-<button class="btn ghost" onclick="App.random()" title="Open a random tangible from the vault (respects your current filters)" style="min-height:44px;white-space:nowrap">🎲 RANDOM</button>
-<select id="catchip" aria-label="Filter by category" onchange="App.setCat(this.value)"><option value="">All categories</option></select>
-<input type="search" id="q" placeholder="Search the tangibles — title, ID, category…" aria-label="Search tangibles">
-</div>
-<div class="fchips" id="az"></div>
-</div>
-<div class="matchline"><span id="matchcount" aria-live="polite"></span></div>
-<div class="grid" id="grid"></div>
-<div class="morewrap"><button class="btn ghost" id="morebtn" onclick="App.more()">LOAD MORE ↓</button></div>
-</section>
-
 <section class="sec" id="itemsec">
 <div id="itemview"></div>
 </section>
@@ -552,7 +532,7 @@ const Finder={
 const App={
   src:"all",cat:"",q:"",letter:"",shown:0,page:60,loadTries:0,
   async boot(){
-    Finder.greet();this.renderAZ();this.bindQ();netSite();
+    Finder.greet();netSite();
     const qs=new URLSearchParams(location.search);
     const pid=qs.get("print"),fmt=(qs.get("format")||"").toLowerCase();
     this.fastCounts();
@@ -614,8 +594,7 @@ const App={
     const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error("index load timed out after 90s")),90000));
     Promise.race([DB.load(),timeout]).then(()=>{
       self.fillCats();self.updateCounts();
-      if(pid){const r=DB.resolve(pid);if(r)self.openItem(r);else{self.showGrid();self.showNotFound(pid);}}
-      else self.showGrid();
+      if(pid){const r=DB.resolve(pid);if(r)self.openItem(r);else self.showNotFound(pid);}
     }).catch((e)=>{
       self.loadTries++;
       if(self.loadTries<2){setTimeout(()=>self.loadIndex(pid),1500);return;}
@@ -633,7 +612,7 @@ const App={
       done(r?Item.recordJSON(r):{error:"TANGIBLE_NOT_FOUND",id:String(pid)});
     }).catch(()=>done({error:"INDEX_UNAVAILABLE",id:String(pid)}));
   },
-  fillCats(){const s=document.getElementById("catchip");
+  fillCats(){const s=document.getElementById("catchip");if(!s)return;
     s.innerHTML='<option value="">All categories</option>'+DB.cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");},
   renderAZ(){
     document.getElementById("az").innerHTML=`<button class="fchip" data-l="" style="border-color:var(--or)">#</button>`+
@@ -685,8 +664,9 @@ const App={
     location.href="?print="+encodeURIComponent(r.id);},
   /* USABILITY WAVE 27: malformed / unknown / very-large IDs get a human message, not silence */
   showNotFound(pid){
-    const g=document.getElementById("grid");if(!g)return;
+    const g=document.getElementById("grid");
     const mc=document.getElementById("matchcount");if(mc)mc.textContent="";
+    if(!g){const iv=document.getElementById("itemview");if(iv)iv.innerHTML='<div style="text-align:center;padding:26px;border:1px solid var(--am);border-radius:12px;background:#241a06;color:#ffe1a8"><p><b style="color:var(--am)">No tangible found for &ldquo;'+esc(String(pid||"").slice(0,80))+'&rdquo;.</b></p><p style="font-size:.88em">Check the ID and try again, or <a href="browse.html">browse the A&ndash;Z archive</a>.</p></div>';audMsg("No tangible found for "+String(pid||"").slice(0,80)+".");return;}
     const shown=esc(String(pid||"").slice(0,80));
     g.insertAdjacentHTML("afterbegin",
       `<div style="grid-column:1/-1;text-align:center;padding:26px;border:1px solid var(--am);border-radius:12px;background:#241a06;color:#ffe1a8">`+
@@ -695,7 +675,7 @@ const App={
       `<p><button class="btn" onclick="location.href='./'">&#8592; BACK TO THE VAULT</button></p></div>`);
     audMsg("No tangible found for "+String(pid||"").slice(0,80)+".");},
   openItem(r){
-    document.getElementById("browsesec").style.display="none";
+    var bs=document.getElementById("browsesec");if(bs)bs.style.display="none";
     document.getElementById("findsec").style.display="none";
     Item.show(r);
     document.getElementById("itemsec").scrollIntoView();

@@ -497,7 +497,7 @@ var JIT={
   if(!window.JAHtalk)return null;
   var t=String(q||"").toLowerCase().replace(/\s+/g," ").trim();
   if(!this.intent.test(t))return null;
-  return JAHtalk.reply(profile,q);
+  return JAHtalk.chatFor(profile,'ai:'+(profile.id||profile.name)).reply(q);
  },
  /* every final host reply passes through here: stat dumps get human repair */
  out:function(profile,html){

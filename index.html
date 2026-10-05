@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script>try{if(localStorage.getItem("jah-theme")==="dark"){document.documentElement.dataset.theme="dark"}}catch(e){}</script>
+<script src="js/signin.js"></script>
+<script>/* JAHProfile storage wrapper (JAHPS): public visitors pass keys through unprefixed (behavior unchanged); signed-in profiles get per-profile namespaced storage. */
+var JAHPS=function(){try{return (typeof JAHProfile!=="undefined")&&JAHProfile.store?JAHProfile.store:localStorage;}catch(e){return localStorage;}}();</script>
+<script>try{if(JAHPS.get("jah-theme")==="dark"){document.documentElement.dataset.theme="dark"}}catch(e){}</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Signature 3D Print Mega Mall — 3D-printable tangibles for every spec &amp; patent</title>
@@ -497,7 +500,9 @@ var JIT={
   if(!window.JAHtalk)return null;
   var t=String(q||"").toLowerCase().replace(/\s+/g," ").trim();
   if(!this.intent.test(t))return null;
-  return JAHtalk.chatFor(profile,'ai:'+(profile.id||profile.name)).reply(q);
+  /* JAHProfile: per-profile chat memory ("train once"); public keeps the shared key + 24h expiry. */
+  var _ck=(typeof JAHProfile!=="undefined")?JAHProfile.chatKey('ai:'+(profile.id||profile.name)):('ai:'+(profile.id||profile.name));
+  return JAHtalk.chatFor(profile,_ck).reply(q);
  },
  /* every final host reply passes through here: stat dumps get human repair */
  out:function(profile,html){
@@ -570,8 +575,8 @@ const App={
     if(q)q.setAttribute("placeholder","Search "+Math.floor(total/1000).toLocaleString()+",000+ tangibles — title, ID, category…");
     document.querySelectorAll(".dyntotal").forEach(e=>{e.textContent=total.toLocaleString()});
   },
-  cacheCounts(c,updated){try{localStorage.setItem("sig3dp-counts",JSON.stringify({c:c,updated:updated||"",at:Date.now()}))}catch(e){}},
-  readCache(){try{const o=JSON.parse(localStorage.getItem("sig3dp-counts")||"null");return (o&&o.c)?o:null}catch(e){return null}},
+  cacheCounts(c,updated){try{JAHPS.set("sig3dp-counts",JSON.stringify({c:c,updated:updated||"",at:Date.now()}))}catch(e){}},
+  readCache(){try{const o=JSON.parse(JAHPS.get("sig3dp-counts")||"null");return (o&&o.c)?o:null}catch(e){return null}},
   async fastCounts(){
     try{
       const j=await fetchJSON("data/counts.json",8000);
@@ -738,7 +743,7 @@ function jnWireItemPanel(){
           "\nURL: "+deep+"\nVariant: "+Item.variant+
           "\nDate: "+new Date().toISOString()+
           "\nIssue (describe the problem): ";
-        try{localStorage.setItem("sig3dp-report-"+Date.now(),txt)}catch(e){}
+        try{JAHPS.set("sig3dp-report-"+Date.now(),txt)}catch(e){}
         if(navigator.clipboard&&navigator.clipboard.writeText)
           navigator.clipboard.writeText(txt).then(()=>alert("Report template copied — describe the issue at the end, then send it to the archive team."),
             ()=>prompt("Copy this report:",txt));
@@ -1086,7 +1091,7 @@ const PrintGuide={
     "Tap any <b>card</b> for its tangible record page: top-view medallion preview, <b>MEDALLION / KEYCHAIN</b> tabs, the real measured dimensions, and the honest warning above every download button.",
     "Tap <b>\u2b07 STL / OBJ / 3MF</b> — the mesh is generated right in your browser, free, with SHA-256 integrity per file. <b>\u2699 SLICER PROFILES</b> are starting points for your machine class (FDM, SLA, SLS, metal) — slice the STL in your own slicer. There is no universal G-code."
   ],
-  seen(){try{return !!localStorage.getItem(this.KEY)}catch(e){return true}},
+  seen(){try{return !!JAHPS.get(this.KEY)}catch(e){return true}},
   open(){
     this.close();
     const self=this;
@@ -1107,7 +1112,7 @@ const PrintGuide={
     try{document.getElementById("printguide-ok").focus({preventScroll:true})}catch(e){}
   },
   close(){const e=document.getElementById("printguide-ov");if(e&&e.parentNode)e.parentNode.removeChild(e)},
-  dismiss(){this.close();try{localStorage.setItem(this.KEY,"1")}catch(e){}},
+  dismiss(){this.close();try{JAHPS.set(this.KEY,"1")}catch(e){}},
   maybe(){
     if(this.seen())return;
     const self=this;
@@ -1117,7 +1122,7 @@ const PrintGuide={
 
 document.addEventListener("DOMContentLoaded",()=>{App.boot();PrintGuide.maybe();});
 </script>
-<button id="jahThemeBtn" title="Dark mode" aria-label="Toggle dark mode">◐</button><script>(function(){try{var b=document.getElementById("jahThemeBtn");function paint(){b.textContent=document.documentElement.dataset.theme==="dark"?"◑":"◐"}b.onclick=function(){var d=document.documentElement;if(d.dataset.theme==="dark"){d.dataset.theme="";try{localStorage.removeItem("jah-theme")}catch(e){}}else{d.dataset.theme="dark";try{localStorage.setItem("jah-theme","dark")}catch(e){}}paint()};paint()}catch(e){}})();</script>
+<button id="jahThemeBtn" title="Dark mode" aria-label="Toggle dark mode">◐</button><script>(function(){try{var b=document.getElementById("jahThemeBtn");function paint(){b.textContent=document.documentElement.dataset.theme==="dark"?"◑":"◐"}b.onclick=function(){var d=document.documentElement;if(d.dataset.theme==="dark"){d.dataset.theme="";try{JAHPS.remove("jah-theme")}catch(e){}}else{d.dataset.theme="dark";try{JAHPS.set("jah-theme","dark")}catch(e){}}paint()};paint()}catch(e){}})();</script>
 <script>/* jah-session-restore: localStorage only, nothing leaves the device */
 (function(){try{
 var SITE="sig3dp",DEEP=["print"],path=location.pathname;
@@ -1131,29 +1136,40 @@ var deep=hasDeep();
 var lid=null;(function(){var q=new URLSearchParams(location.search),i;
  for(i=0;i<DEEP.length;i++){var v=q.get(DEEP[i]);if(v){lid=v;break}}
  if(!lid){var m=/[#&?](?:book|issue|course|print|edition|degree|college|paper|series|hero)=([A-Za-z0-9-_.]+)/.exec(location.hash||"");if(m)lid=m[1]}})();
-if(lid){try{localStorage.setItem("jah-last-"+SITE,lid)}catch(e){}}
+if(lid){try{JAHPS.set("jah-last-"+SITE,lid)}catch(e){}}
 document.addEventListener("click",function(e){try{var t=e.target&&e.target.closest?e.target.closest("[data-id]"):null;
- if(t&&t.getAttribute("data-id")){localStorage.setItem("jah-last-"+SITE,t.getAttribute("data-id"));return}
+ if(t&&t.getAttribute("data-id")){JAHPS.set("jah-last-"+SITE,t.getAttribute("data-id"));return}
  var a=e.target&&e.target.closest?e.target.closest("a[href]"):null;
- if(a){var hr=a.getAttribute("href")||"";for(var i=0;i<DEEP.length;i++){var m2=new RegExp("[?&]"+DEEP[i]+"=([A-Za-z0-9-_.]+)").exec(hr);if(m2){localStorage.setItem("jah-last-"+SITE,m2[1]);break}}}}catch(x){}},true);
+ if(a){var hr=a.getAttribute("href")||"";for(var i=0;i<DEEP.length;i++){var m2=new RegExp("[?&]"+DEEP[i]+"=([A-Za-z0-9-_.]+)").exec(hr);if(m2){JAHPS.set("jah-last-"+SITE,m2[1]);break}}}}catch(x){}},true);
 /* (a) scroll save per page path (load-time restore removed 2026-10-04 — page stays put) */
 var SK="jah-scroll-"+SITE+"-"+path,st=null;
-window.addEventListener("scroll",function(){clearTimeout(st);st=setTimeout(function(){try{localStorage.setItem(SK,String(window.scrollY))}catch(e){}},400)},{passive:true});
+window.addEventListener("scroll",function(){clearTimeout(st);st=setTimeout(function(){try{JAHPS.set(SK,String(window.scrollY))}catch(e){}},400)},{passive:true});
 /* TOUR FIX 2026-10-04: load-time scroll restore removed — the page stays put. */
 /* TOUR FIX 2026-10-04: load-time last-record jump removed — the page stays put. */
 /* (b) tab state */
 var TK="jah-tabs-"+SITE+"-"+path;
 document.addEventListener("click",function(e){try{var b=e.target&&e.target.closest?e.target.closest(".tab,[data-tab]"):null;
  if(!b)return;var id=b.getAttribute("data-tab")||b.getAttribute("data-s")||b.id||(b.textContent||"").trim();
- var o={};try{o=JSON.parse(localStorage.getItem(TK)||"{}")}catch(x){}
+ var o={};try{o=JSON.parse(JAHPS.get(TK)||"{}")}catch(x){}
  var c=b.closest(".tabs")||b.parentElement;
  o[c?(c.id||"i"+Array.prototype.indexOf.call((c.parentElement||document.body).children,c)):"x"]=id;
- localStorage.setItem(TK,JSON.stringify(o))}catch(x){}},true);
-if(!deep){(function(){var o=null;try{o=JSON.parse(localStorage.getItem(TK)||"{}")}catch(x){}
+ JAHPS.set(TK,JSON.stringify(o))}catch(x){}},true);
+if(!deep){(function(){var o=null;try{o=JSON.parse(JAHPS.get(TK)||"{}")}catch(x){}
  if(!o)return;Object.keys(o).forEach(function(k){var cont=document.getElementById(k),btn=null;
   if(cont){btn=cont.querySelector('[data-tab="'+o[k]+'"],[data-s="'+o[k]+'"]')}
   else{try{btn=document.querySelector('.tab[id="'+o[k]+'"]')}catch(x){}}
   if(btn&&!btn.classList.contains("on")&&btn.offsetParent!==null){btn.click()}})})()}
 }catch(e){}})();</script>
+<script>
+/* JAHProfile sign-in — mount the header button. signin.js is already loaded in <head>. */
+(function () {
+  var mount = document.querySelector('header .booksearch') ||
+              document.querySelector('nav.jtabbar') ||
+              document.querySelector('header nav') ||
+              document.querySelector('header') ||
+              document.body;
+  if (window.JAHProfile && JAHProfile.ui) JAHProfile.ui.renderButton(mount);
+})();
+</script>
 </body>
 </html>

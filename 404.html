@@ -20,5 +20,16 @@ p{max-width:560px;margin:0 auto 1.4em}
 <p>The printer stopped mid-job: this object does not exist. No layers, no infill, no keepsake medallion — the file was never sliced. But the vault holds a printable tangible for every Signature spec draft and every public patent record.</p>
 <div class="links"><a href="./">🏠 Home</a><a href="./browse/">🗂 Browse the vault</a><a href="./#finder">🔎 Tangible Finder</a><a href="./#guide">🖨 Print guide</a></div>
 <div class="foot">Free STL, OBJ and 3MF downloads — marching to 1,000,000 tangibles.</div>
+<script src="js/signin.js"></script>
+<script>
+(function () {
+  var mount = document.querySelector('header .booksearch') ||
+              document.querySelector('nav.jtabbar') ||
+              document.querySelector('header nav') ||
+              document.querySelector('header') ||
+              document.body;
+  if (window.JAHProfile && JAHProfile.ui) JAHProfile.ui.renderButton(mount);
+})();
+</script>
 </body>
 </html>

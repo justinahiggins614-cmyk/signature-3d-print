@@ -216,7 +216,7 @@ def main():
 <p>Every tangible on this page is a <b>50 mm x ~7 mm commemorative medallion</b> — free STL, OBJ and 3MF print files are generated in your browser from the item's page. Files are not stored here; each link below opens its item's page with downloads.</p>
 <p><b>COMMERCIAL/TECHNICAL NOTE: THIS IS A COMMEMORATIVE MEDALLION, NOT THE INVENTION.</b> Each file is a keepsake emblem for its record — not a functional replica of the invention described.</p>
 <ol start="{p*PERB+1}">{lis}</ol>
-<p>{prev_l} · <a href="{BASE}">depository home</a> · {next_l}</p></body></html>\n""")
+<p>{prev_l} · <a href="{BASE}">depository home</a> · {next_l}</p><script src=\"../js/signin.js\"></script><script>(function(){{var m=document.querySelector(\"header\")||document.body;if(window.JAHProfile&&JAHProfile.ui)JAHProfile.ui.renderButton(m)}})();</script></body></html>\n""")
     # browse index
     with open(os.path.join(bdir, "index.html"), "w") as f:
         f.write(f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
@@ -227,7 +227,7 @@ def main():
 """)
         for p in range(npages):
             f.write(f'<li><a href="shard-{p+1:04d}.html">Shard {p+1}</a> — tangibles {p*PERB+1:,}–{min((p+1)*PERB, n):,}</li>\n')
-        f.write("</ul></body></html>\n")
+        f.write("</ul><script src=\"../js/signin.js\"></script><script>(function(){var m=document.querySelector(\"header\")||document.body;if(window.JAHProfile&&JAHProfile.ui)JAHProfile.ui.renderButton(m)})();</script></body></html>\n")
     print(f"browse shards: {npages} pages")
 
     # ---- A-Z archive buckets for browse.html (lazy-loaded, one gz per letter) ----

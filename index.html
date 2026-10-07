@@ -214,6 +214,40 @@ border-radius:12px;padding:8px 14px;z-index:9999;align-items:center;gap:10px;fon
 <a class="jtab" href="browse.html">📚 1 Million Archive</a>
 
 </nav>
+<div class="wrap">
+<section class="sec" id="findsec">
+<h2>🔎 Finder <span class="sub">Describe what you want to hold — the finder walks you to the right tangible</span></h2>
+<div class="finder" id="finder">
+<div class="fhead">🛎 TANGIBLE FINDER — what should we print today?</div>
+<div class="frow"><input id="fq" maxlength="140" placeholder="Describe it in plain words — e.g. solar water pump…" aria-label="Ask the tangible finder"><button class="btn" onclick="Finder.ask()">ASK</button></div>
+<div class="flog" id="flog" aria-live="polite"></div>
+<div class="fchips" id="fchips"></div>
+</div>
+</section>
+
+<section class="sec" id="itemsec">
+<div id="itemview"></div>
+</section>
+
+<section class="sec" id="guidesec">
+<h2>🖨 Print guide <span class="sub">From download to object — any printer, any material</span></h2>
+<div class="guide">
+<div class="gstep"><h3>1 · PICK A TANGIBLE</h3><p>Search or browse the vault, open any item. Every one of the <b class="dyntotal">697,163</b> records has its own printable medallion, generated fresh from its ID.</p></div>
+<div class="gstep"><h3>2 · DOWNLOAD A UNIVERSAL FILE</h3><p><b>STL</b> (every slicer reads it), <b>OBJ</b> (universal backup), or <b>3MF</b> (modern universal). The mesh is generated in your browser — nothing to wait for, no account, no cost.</p></div>
+<div class="gstep"><h3>3 · SLICE FOR YOUR PRINTER</h3><p>There is <b>no universal G-code</b> — G-code is baked for one printer model. Slice the STL in your own slicer with the profile below for your machine, then print.</p></div>
+<div class="gstep"><h3>4 · HOLD IT</h3><p>Medallion: 50&nbsp;mm across, ~7&nbsp;mm tall — a desk piece. Keychain variant: same medallion with a fused loop. Display it, gift it, collect them.</p></div>
+</div>
+<h2 style="margin-top:26px">⚙ Slicer profiles <span class="sub">Pick your material &amp; printer class — tuned per machine type</span></h2>
+<div class="profpickwrap">
+<div class="profpick"><label for="profselect">Pick your material / printer class:</label>
+<select id="profselect" onchange="profPicker('profselect')" aria-label="Pick your material and printer class"></select></div>
+<div class="prof featured proffeat"></div>
+<div class="startpoint"><b>⚠ STARTING POINT — not a factory profile.</b> These settings are a safe <b>starting point</b> for this medallion's geometry (flat base, no supports needed). Your exact temperatures, speeds and retraction depend on your filament brand and machine — run a temperature tower and calibrate for your own setup before a big print run.</div>
+</div>
+<div class="profiles" id="profilesgrid"></div>
+<div class="note"><b>Honest note:</b> these profiles are starting points from the medallion's geometry (flat base, no overhangs beyond the rim, fused shells). Your exact temperatures depend on your filament brand — run a temperature tower if you want perfection.</div>
+</section>
+</div>
 <div class="sig-stamp" style="text-align:center;margin:18px 8px 6px"><img src="assets/signature-stamp.jpg" alt="Official Signature stamp of Justin Addam Higgins" style="width:150px;max-width:40%;height:auto;border-radius:8px" loading="lazy"><div style="font-size:.72em;opacity:.75">Official Signature stamp</div></div>
 
 <footer>
@@ -482,7 +516,7 @@ const Finder={
     if(cv!=null){this.say(JIT.html(cv),"host");return}
     const kws=this.keywords(q);
     if(!kws.length){this.say(JIT.out(JIT_PROFILE_FINDER,"Give me one more word to go on — a thing, a field, a material… 🏭"),"host");return}
-    const rows=await DB.load();
+    let rows=[];try{rows=await DB.load()}catch(e){rows=[]}
     if(!rows.length){this.say(JIT.out(JIT_PROFILE_FINDER,"The vault index is offline right now — try again in a moment. 🏭"),"host");return}
     const hits=rows.map(r=>{const sc=this.score(r,kws);return {r:r,s:sc.s,f:sc.fields};}).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,5);
     if(!hits.length){this.say(JIT.out(JIT_PROFILE_FINDER,`NO MATCHING TANGIBLE FOUND for <b>${esc(kws.join(" "))}</b> — try different words, or browse the shelves below. 🏭`),"host");return}
@@ -545,14 +579,27 @@ const App={
   loadIndex(pid){
     const self=this;
     const fail=(msg)=>{
-      const g=document.getElementById("grid");if(!g)return;
-      g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--dim)">`+
-        `<p><b style="color:var(--am)">The tangible index could not be loaded.</b></p>`+
-        `<p style="font-size:.85em">${esc(msg)} The counts above are the last verified numbers.</p>`+
-        `<p><button class="btn" onclick="App.loadTries=0;App.loadIndex(${pid?JSON.stringify(pid):"null"})">↻ RETRY</button> `+
-        `<a class="btn ghost" href="browse/">OPEN STATIC ARCHIVE</a></p></div>`;
       const mb=document.getElementById("morebtn");if(mb)mb.style.display="none";
       const mc=document.getElementById("matchcount");if(mc)mc.textContent="";
+      const g=document.getElementById("grid");
+      if(g){
+        g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--dim)">`+
+          `<p><b style="color:var(--am)">The tangible index could not be loaded.</b></p>`+
+          `<p style="font-size:.85em">${esc(msg)} The counts above are the last verified numbers.</p>`+
+          `<p><button class="btn" onclick="App.loadTries=0;App.loadIndex(${pid?JSON.stringify(pid):"null"})">↻ RETRY</button> `+
+          `<a class="btn ghost" href="browse/">OPEN STATIC ARCHIVE</a></p></div>`;
+        return;
+      }
+      /* front door has no grid — say it in the finder log where the user is looking */
+      try{
+        const log=document.getElementById("flog");
+        if(log){const d=document.createElement("div");d.className="fmsg host";
+          d.innerHTML=`<b style="color:var(--am)">The tangible index could not be loaded</b> (${esc(msg)}). `+
+            `The counts above are the last verified numbers. `+
+            `<button class="btn" style="margin-left:8px" onclick="App.loadTries=0;App.loadIndex(null)">↻ RETRY</button> `+
+            `<a class="btn ghost" href="browse.html">OPEN STATIC ARCHIVE</a>`;
+          log.appendChild(d);}
+      }catch(e){}
     };
     const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error("index load timed out after 90s")),90000));
     Promise.race([DB.load(),timeout]).then(()=>{
@@ -1002,9 +1049,10 @@ function auStop(){try{if(window.__JAHREAD)window.__JAHREAD.stopAll();}catch(e){}
 const Aud={
   clean(t){return String(t||"").replace(/[`{}|\\]/g,"").replace(/[ \t\u00a0]+/g," ").trim()},
   read(text,label){if(window.__JAHREAD&&!window.__JAHREAD.playGuard("read"))return;auStop();text=this.clean(text);if(!text){audMsg("Nothing to read here yet.");return}
-    AU.label=label||"";AU.q=auChunks(AU.label+". "+text);AU.i=0;AU.active=true;AU.paused=false;
-    if(hasSpeech()){try{window.speechSynthesis.cancel()}catch(e){}auSpeakNext()}
-    else{auShowBar(true);auPaintBtn();fxStart(AU.label+". "+text);audMsg("This browser has no built-in voice — reading with the online voice instead.")}},
+    /* Audio-only: speechSynthesis is dead in Facebook's in-app browser and silent
+       on his phone — the tiered online voice (ResponsiveVoice -> Google TTS) works everywhere. */
+    AU.label=label||"";AU.q=[];AU.i=0;AU.active=true;AU.paused=false;
+    auShowBar(true);auPaintBtn();fxStart(AU.label+". "+text)},
   readItem(){const r=Item.rec;if(!r)return;
     this.read("Signature Tangible for "+r.id+". "+r.title+". Category: "+(r.cat||"general")+". "+
       "A commemorative 3D-printable medallion for this record — not a functional replica of the invention. "+

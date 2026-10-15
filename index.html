@@ -812,6 +812,15 @@ const Item={
         <div class="startpoint"><b>⚠ STARTING POINT — not a factory profile.</b> Safe <b>starting point</b> for this medallion's geometry (flat base, no supports needed). Your exact temperatures, speeds and retraction depend on your filament brand and machine — run a temperature tower and calibrate for your own setup.</div>
         </div>
         <div class="profiles">${PROFILES.map((p,i)=>`<div class="prof"><h4>${esc(p.name)}</h4><code>${esc(p.code)}</code><button class="btn ghost" style="margin-top:8px;padding:6px 14px;font-size:.8em" onclick="Print3D.copyProfile(${i})">📋 COPY</button></div>`).join("")}</div>
+        <h4 style="color:var(--ok);letter-spacing:.08em;margin-top:18px">🖨 PRINT STEPS — from file to finished medallion</h4>
+        <ol style="font-size:.92em;color:var(--dim);line-height:1.7;margin:6px 0 6px 22px;padding:0">
+          <li><b style="color:var(--txt)">Download</b> the STL (universal), OBJ, or 3MF above — generated fresh in your browser for this record.</li>
+          <li><b style="color:var(--txt)">Import</b> the file into your own slicer (any slicer that reads STL).</li>
+          <li><b style="color:var(--txt)">Pick the profile</b> above that matches your material and printer class, and use it as your starting point.</li>
+          <li><b style="color:var(--txt)">Slice and check the preview</b> — confirm a flat first layer; no supports needed (flat base, no overhangs beyond the rim).</li>
+          <li><b style="color:var(--txt)">Print flat, base down</b>, at the temperatures for your filament brand — run a temperature tower first if you want perfection.</li>
+          <li><b style="color:var(--txt)">Cool, remove, inspect</b> — let the bed cool so the flat base releases cleanly, then check the notch ring and face detail.</li>
+        </ol>
         <h4 style="color:var(--am);letter-spacing:.08em;margin-top:18px">💬 HOW TO USE</h4>
         <p style="font-size:.92em;color:var(--dim)"><b style="color:var(--txt)">Medallion</b> (50&nbsp;mm × ~7&nbsp;mm): desk piece, shelf display, gift — print flat, base down, no supports. <b style="color:var(--txt)">Keychain variant</b>: same medallion with a fused loop (5&nbsp;mm hole) — clip a ring through it. Collect them by record ID; the notch ring on the face encodes the ID's digits.</p>
         <div class="qa"><div class="qhead">❓ ASK ABOUT THIS TANGIBLE</div>
@@ -843,6 +852,7 @@ const Item={
       '<dt>Est. material</dt><dd>~'+cm3.toFixed(1)+' cm³ — about '+pla.toFixed(0)+' g PLA at typical settings (estimate; varies with infill)</dd>'+
       '<dt>Orientation</dt><dd>flat, base down</dd>'+
       '<dt>Supports</dt><dd><b>none required</b> — flat base, no overhangs beyond the rim</dd></dl>'+
+      '<div class="note"><b>⏱ Estimates, not validated print jobs.</b> The material figure above is an internally consistent numerical estimate computed from the medallion geometry — not a timed, validated print job. It does not model every real-world factor: wall thickness, supports, nozzle settings, printer motion, or material-specific slicing behavior. Your slicer\'s own estimate, tuned for your machine and material, is the number to trust.</div>'+
       '<div id="dlinteg"><p class="prov">Computing file hashes…</p></div>';
     this.renderIntegrity();
   },
